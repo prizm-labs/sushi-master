@@ -8,6 +8,7 @@
 
 #import "SMViewController.h"
 #import "SMMyScene.h"
+#import "SMFishingScene.h"
 
 @implementation SMViewController
 
@@ -21,8 +22,8 @@
     skView.showsNodeCount = YES;
     
     // Create and configure the scene.
-    SKScene * scene = [SMMyScene sceneWithSize:skView.bounds.size];
-    scene.scaleMode = SKSceneScaleModeAspectFill;
+    SMFishingScene * scene = [SMFishingScene sceneWithSize:CGSizeMake(screenWidth, screenHeight)];
+    scene.scaleMode = SKSceneScaleModeAspectFit;
     
     // Present the scene.
     [skView presentScene:scene];
@@ -36,7 +37,8 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
+        return UIInterfaceOrientationMaskLandscape;
+        //return UIInterfaceOrientationMaskAllButUpsideDown;
     } else {
         return UIInterfaceOrientationMaskAll;
     }
