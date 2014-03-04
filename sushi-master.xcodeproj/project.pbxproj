@@ -25,6 +25,7 @@
 		049BDD5B18C408D1000D5EFC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049BDD3318C408D1000D5EFC /* UIKit.framework */; };
 		049BDD6318C408D1000D5EFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 049BDD6118C408D1000D5EFC /* InfoPlist.strings */; };
 		049BDD6518C408D1000D5EFC /* sushi_masterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049BDD6418C408D1000D5EFC /* sushi_masterTests.m */; };
+		4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C8D605818C506A0009BB182 /* SMFisherman.m */; };
 		EC2A58C518C4615900F2D3F8 /* SMOcean.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C418C4615900F2D3F8 /* SMOcean.m */; };
 		EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C718C4619200F2D3F8 /* SMBoat.m */; };
 		EC2A58CB18C461B000F2D3F8 /* SMFish.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58CA18C461B000F2D3F8 /* SMFish.m */; };
@@ -67,6 +68,8 @@
 		049BDD6018C408D1000D5EFC /* sushi-masterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "sushi-masterTests-Info.plist"; sourceTree = "<group>"; };
 		049BDD6218C408D1000D5EFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		049BDD6418C408D1000D5EFC /* sushi_masterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sushi_masterTests.m; sourceTree = "<group>"; };
+		4C8D605718C506A0009BB182 /* SMFisherman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFisherman.h; sourceTree = "<group>"; };
+		4C8D605818C506A0009BB182 /* SMFisherman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFisherman.m; sourceTree = "<group>"; };
 		EC2A58C318C4615900F2D3F8 /* SMOcean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMOcean.h; sourceTree = "<group>"; };
 		EC2A58C418C4615900F2D3F8 /* SMOcean.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMOcean.m; sourceTree = "<group>"; };
 		EC2A58C618C4619200F2D3F8 /* SMBoat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBoat.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 				049BDD4D18C408D1000D5EFC /* SMMyScene.m */,
 				EC2A58C318C4615900F2D3F8 /* SMOcean.h */,
 				EC2A58C418C4615900F2D3F8 /* SMOcean.m */,
+				4C8D605718C506A0009BB182 /* SMFisherman.h */,
+				4C8D605818C506A0009BB182 /* SMFisherman.m */,
 				EC2A58D018C49BA400F2D3F8 /* SMChumPiece.h */,
 				EC2A58D118C49BA400F2D3F8 /* SMChumPiece.m */,
 				EC2A58CF18C491CD00F2D3F8 /* Constants.h */,
@@ -299,6 +304,7 @@
 				EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */,
 				EC2A58CB18C461B000F2D3F8 /* SMFish.m in Sources */,
 				049BDD4B18C408D1000D5EFC /* SMViewController.m in Sources */,
+				4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */,
 				049BDD4E18C408D1000D5EFC /* SMMyScene.m in Sources */,
 				EC2A58D218C49BA400F2D3F8 /* SMChumPiece.m in Sources */,
 				049BDD3E18C408D1000D5EFC /* main.m in Sources */,

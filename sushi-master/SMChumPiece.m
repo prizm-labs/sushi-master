@@ -18,14 +18,13 @@
     
     if (self)
     {
-        float baseHeight = 10.0;
+        float baseWidth = chumPieceWidth;
         
         SKColor* baseColor = [SKColor redColor];
         
-        CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
+        CGSize baseSize = CGSizeMake(baseWidth, baseWidth);
         
         bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
-        
         [self addChild:bodyNode];
     }
     

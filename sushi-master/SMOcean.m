@@ -8,6 +8,7 @@
 
 #import "SMOcean.h"
 #import "SMChumPiece.h"
+#import "SMBoat.h"
 
 @implementation SMOcean
 
@@ -21,20 +22,30 @@
     {
         self.userInteractionEnabled = YES;
         
-        float baseHeight = 280.0;
-        
-        SKColor* baseColor = [SKColor colorWithRed:0.2 green:1.0 blue:0.8 alpha:1.0];
-        
+        baseHeight = oceanHeight;
         CGSize baseSize = CGSizeMake(screenWidth, baseHeight);
+        SKColor* baseColor = [SKColor colorWithRed:0.2 green:1.0 blue:0.8 alpha:0.5];
         
         bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
-
         bodyNode.position = CGPointMake(0, baseHeight/2-screenHeight/2);
-        
+        bodyNode.zPosition = zOcean;
         [self addChild:bodyNode];
+        
+        // setup
+        
+        [self addFishingBoat];
+        
     }
     
     return self;
+}
+
+-(void) addFishingBoat {
+    
+    SMBoat* boat = [[SMBoat alloc] init];
+    boat.position = CGPointMake(0,baseHeight/2);
+    [self addChild:boat];
+    
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -53,7 +64,7 @@
     
     
     SMChumPiece* chumPiece = [[SMChumPiece alloc] init];
-    
+    chumPiece.zPosition = zOceanForeground;
     chumPiece.position = location;
     
     [self addChild:chumPiece];
