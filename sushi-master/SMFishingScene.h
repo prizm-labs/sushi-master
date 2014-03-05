@@ -8,6 +8,10 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface SMFishingScene : SKScene
+@class SMOcean;
+
+@interface SMFishingScene : SKScene <SKPhysicsContactDelegate> {
+    SMOcean* ocean;
+}
 
 @end

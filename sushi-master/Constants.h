@@ -29,6 +29,21 @@
 
 #define screenCenter CGPointMake(screenWidth/2,screenHeight/2)
 
+#define kTileWidth 30.0
+
+#define kNodeCreatureName "creature"
+#define kNodeCommandName "command"
+
+#define kActionSwimmingKey "swimming"
+
+#define kCreatureCategoryBitMask 1
+
+
+#define kUpDirection 1
+#define kRightDirection 2
+#define kDownDirection 3
+#define kLeftDirection 4
+
 #define oceanHeight screenHeight*0.65
 
 #define boatWidth screenWidth*0.85

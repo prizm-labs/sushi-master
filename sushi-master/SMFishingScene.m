@@ -8,6 +8,7 @@
 
 #import "SMFishingScene.h"
 #import "SMOcean.h"
+#import "SMFish.h"
 
 @implementation SMFishingScene
 
@@ -17,9 +18,12 @@
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
+        self.physicsWorld.gravity = CGVectorMake(0.0, 0.0);
+        self.physicsWorld.contactDelegate = self;
         
-        SMOcean* ocean = [[SMOcean alloc] init];
-        ocean.position = screenCenter;
+        
+        ocean = [[SMOcean alloc] init];
+        //ocean.position = screenCenter;
         
         [self addChild:ocean];
     }
@@ -37,5 +41,19 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    
+    [ocean spawnCreaturesContinuously];
+    
+    // creature movement and commands
+    [ocean enumerateChildNodesWithName:@nodeNameFish usingBlock:^(SKNode *nodeB, BOOL *stop) {
+        
+       
+        SMFish* creature = (SMFish*)nodeB;
+        
+        //NSLog(@"fish: %@",creature);
+        
+        
+        [creature wrapMovement];
+    }];
 }
 @end

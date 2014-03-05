@@ -8,11 +8,18 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface SMOcean : SKNode {
+@interface SMOcean : SKSpriteNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
+    float baseWidth;
+    
+    int creatureLimit;
+    double nextCreatureSpawnTime;
+    NSMutableArray* creatures;
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
+
+-(void) spawnCreaturesContinuously;
 
 @end

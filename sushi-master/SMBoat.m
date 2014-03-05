@@ -30,7 +30,7 @@
         
         bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
         bodyNode.zPosition = zBoat;
-        bodyNode.position = CGPointMake(0, -baseHeight*aboveWaterRatio);
+        bodyNode.position = CGPointMake(0, 0*aboveWaterRatio);
         [self addChild:bodyNode];
         
         [self setupFishermenPositions];

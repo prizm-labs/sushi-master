@@ -38,6 +38,7 @@
 @property (assign,readwrite) float movementSpeed;
 
 -(id) initWithCreatureClass: (int)_creatureClass AndSizeClass: (int)_sizeClass AtPoint: (CGPoint)origin;
-
+-(void) startSwimmingInDirection: (int)_movementDirection;
+-(void) wrapMovement;
 
 @end
