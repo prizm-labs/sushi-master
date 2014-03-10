@@ -8,10 +8,16 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+@class SMOcean;
+
 @interface SMBoat : SKNode {
     SKSpriteNode* bodyNode;
     SKNode* fishermenDeck;
     SKColor* baseColor;
+    
+    SMOcean* ocean;
+    
+    SKSpriteNode* activeFishermanPosition;
     
     float baseHeight;
     float baseWidth;
@@ -28,6 +34,11 @@
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
+@property (atomic,retain) SMOcean* ocean;
 
+-(int) fishermanPositionAtLocation:(UITouch*)touch;
+-(void) highlightFishermanPositionAtLocation:(UITouch*)touch;
+-(CGPoint) locationAtFishermanPosition:(int)index;
+-(void) scatterChumOfQuantity:(int)quantity;
 
 @end

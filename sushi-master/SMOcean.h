@@ -7,11 +7,14 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+@class SMBoat;
 
 @interface SMOcean : SKSpriteNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
     float baseWidth;
+    
+    SMBoat* boat;
     
     int creatureLimit;
     double nextCreatureSpawnTime;
@@ -21,5 +24,6 @@
 @property (atomic,retain) SKSpriteNode* bodyNode;
 
 -(void) spawnCreaturesContinuously;
+-(void) addChumAtLocation:(CGPoint)location;
 
 @end

@@ -7,10 +7,14 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+@class SMBoat;
 
 @interface SMFisherman : SKNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
+    
+    SMBoat* boat;
+    int position;
     
     SKSpriteNode* hook;
     SKSpriteNode* hookDestinationHighlight;
@@ -19,5 +23,6 @@
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
 
+-(void) setBoat:(SMBoat*)_boat andPosition:(int)_position;
 
 @end

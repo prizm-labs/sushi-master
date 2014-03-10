@@ -8,10 +8,12 @@
 
 #import "SMBoat.h"
 #import "SMFisherman.h"
+#import "SMChumPiece.h"
+#import "SMOcean.h"
 
 @implementation SMBoat
 
-@synthesize bodyNode;
+@synthesize bodyNode, ocean;
 
 -(id) init
 {
@@ -41,6 +43,7 @@
 
 -(void) setupFishermenPositions {
     
+    activeFishermanPosition = nil;
     maxFishermenPositions = 8;
     fishermenPositionSpacing = baseWidth/(maxFishermenPositions-1)*0.9;
     
@@ -81,12 +84,107 @@
     fisherman.zPosition = zBoatForeground;
     fisherman.position = fishermanPosition.position;
     
+    [fisherman setBoat:self andPosition:position];
+    
     [fishermenDeck addChild:fisherman];
     [fishermen addObject:fisherman];
 }
 
+-(CGPoint) locationAtFishermanPosition:(int)index {
+    
+    SKSpriteNode* fishermanPosition = (SKSpriteNode*)[fishermenPositions objectAtIndex:index];
+    
+    return fishermanPosition.position;
+    
+}
+
+-(void) highlightFishermanPositionAtLocation:(UITouch*)touch {
+    int index = [self fishermanPositionAtLocation:touch];
+    
+    SKSpriteNode* fishermanPosition = (SKSpriteNode*)[fishermenPositions objectAtIndex:index];
+    
+    [self highlightFishermanPosition:fishermanPosition];
+    
+}
+
+-(void) highlightFishermanPosition:(SKSpriteNode*)fishermanPosition {
+    
+    if (activeFishermanPosition!=fishermanPosition) {
+        
+        if (activeFishermanPosition!=nil) {
+            activeFishermanPosition.color = [SKColor grayColor];
+        }
+        
+        activeFishermanPosition = fishermanPosition;
+        activeFishermanPosition.color = [SKColor greenColor];
+        
+    }
+    
+}
+
+-(int) fishermanPositionAtLocation:(UITouch*)touch {
+    
+    CGPoint location = [touch locationInNode:fishermenDeck];
+    
+    NSLog(@"x location: %f",location.x);
+    NSLog(@"fisherman positions: %@",fishermenPositions);
+    
+    int index = roundf(location.x/fishermenPositionSpacing);
+    if (index<0) {
+        index = 0;
+    } else if (index>maxFishermenPositions-1) {
+        index = maxFishermenPositions-1;
+    }
+    
+    return index;
+}
+
 -(void) addWeight {
     // boat cannot
+}
+
+- (float)randomValueBetween:(float)low andValue:(float)high {
+    return (((float) arc4random() / 0xFFFFFFFFu) * (high - low)) + low;
+}
+
+-(void) throwChumToLocation:(CGPoint)location {
+    
+    //SKAction*
+    
+}
+
+-(void) scatterChumOfQuantity:(int)quantity {
+    
+    NSLog(@"scattering chum: %i",quantity);
+    
+    //underneath fishermen positions
+    for (int i=0;i<quantity;i++) {
+        // get position
+        int index = roundf([self randomValueBetween:0 andValue:maxFishermenPositions-1]);
+        
+        NSLog(@"chum at position: %i",index);
+        
+        SKSpriteNode* fishermanPosition = (SKSpriteNode*)[fishermenPositions objectAtIndex:index];
+        
+        NSLog(@"fisherman position: %f,%f",fishermanPosition.position.x,fishermanPosition.position.y);
+        
+        CGPoint chumDestination  = [fishermenDeck convertPoint:fishermanPosition.position toNode:ocean];
+        
+        NSLog(@"chum destination: %f,%f",chumDestination.x,chumDestination.y);
+        
+        chumDestination = CGPointMake(chumDestination.x,chumDestination.y-120.0);
+        
+        [ocean addChumAtLocation:chumDestination];
+    }
+    
+}
+
+-(void) scatterChumContinuously {
+    
+    //check speed of 
+    
+    //check how many chum pieces in the water
+    
 }
 
 

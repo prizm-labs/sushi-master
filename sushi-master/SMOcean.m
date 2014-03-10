@@ -38,7 +38,7 @@
         
         // setup
         
-        creatureLimit = 2;
+        creatureLimit = 20;
         creatures = [[NSMutableArray alloc] init];
         nextCreatureSpawnTime = 0;
         
@@ -54,8 +54,9 @@
 
 -(void) addFishingBoat {
     
-    SMBoat* boat = [[SMBoat alloc] init];
+    boat = [[SMBoat alloc] init];
     boat.position = CGPointMake(0,baseHeight/2);
+    boat.ocean = self;
     [bodyNode addChild:boat];
     
 }
@@ -68,8 +69,13 @@
         
         NSLog(@"ocean touched: %f,%f",location.x,location.y);
         
-        [self addChumAtLocation:location];
+        [boat scatterChumOfQuantity:1];
+        //[self addChumAtLocation:location];
     }
+}
+
+-(void) throwChumToLocation {
+    
 }
 
 -(void) addChumAtLocation:(CGPoint)location {
@@ -96,7 +102,7 @@
 
 -(void) spawnCreaturesFromData:(NSArray*)creaturesData {
     
-    NSLog(@"creatures data: %@",creaturesData);
+    //NSLog(@"creatures data: %@",creaturesData);
     
     [creaturesData enumerateObjectsUsingBlock:^(id creatureData, NSUInteger idx, BOOL *stop) {
         
@@ -109,7 +115,7 @@
 
 -(void) spawnCreatureWithClass:(int)class Size:(int)size Direction:(int)direction AtX:(int)x AndY:(int)y {
     
-    NSLog(@"spawning creature: class %i, size %i, direction %i, x %i, y %i",class,size,direction,x,y);
+    //NSLog(@"spawning creature: class %i, size %i, direction %i, x %i, y %i",class,size,direction,x,y);
     
     CGPoint newCreaureOrigin = [self pointAtGridX:x AndGridY:y];
     
@@ -140,7 +146,7 @@
         int newCreatureClass = 1;
         int newCreatureSize = floorf([self randomValueBetween:0 andValue:3]);
         int newCreatureX = 0;
-        int newCreatureY = floorf([self randomValueBetween:0 andValue:8]);
+        int newCreatureY = floorf([self randomValueBetween:0 andValue:5]);
         int newCreatureDirection = 2;
         
         [self spawnCreatureWithClass:newCreatureClass Size:newCreatureSize Direction:newCreatureDirection AtX:newCreatureX AndY:newCreatureY];

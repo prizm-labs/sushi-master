@@ -30,6 +30,38 @@
     return self;
 }
 
+-(void) startGame {
+    
+    
+}
+
+-(void) addTime {
+    
+    
+}
+
+-(void) endGame {
+    
+    // tally fish
+    
+}
+
+
+-(void) highlightImminentBite {
+    
+    
+}
+
+-(void) showHookedFish {
+    
+    
+}
+
+-(void) showMissedFish {
+    
+    
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     

@@ -69,8 +69,8 @@
 
 -(void) updateBody {
     
-    NSLog(@"size class:%i",sizeClass);
-    NSLog(@"creature class:%i",creatureClass);
+    //NSLog(@"size class:%i",sizeClass);
+    //NSLog(@"creature class:%i",creatureClass);
     
     float creatureWidth;
     UIColor* creatureColor;
@@ -103,7 +103,7 @@
             
     }
     
-    NSLog(@"creature width:%f",creatureWidth);
+    //NSLog(@"creature width:%f",creatureWidth);
     
     self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(creatureWidth, creatureWidth)];
     
@@ -123,13 +123,13 @@
     
     SKSpriteNode* newBody = [SKSpriteNode spriteNodeWithColor:creatureColor size:CGSizeMake(creatureWidth, creatureWidth)];
     
-    NSLog(@"new body:%@",newBody);
+    //NSLog(@"new body:%@",newBody);
     
     bodyNode = newBody;
     
     [self addChild:bodyNode];
     
-    NSLog(@"body node:%@",bodyNode);
+    //NSLog(@"body node:%@",bodyNode);
 }
 
 -(CGPoint) setDestination {

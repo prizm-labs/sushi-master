@@ -7,6 +7,7 @@
 //
 
 #import "SMFisherman.h"
+#import "SMBoat.h"
 
 @implementation SMFisherman
 
@@ -18,6 +19,14 @@
     
     if (self)
     {
+        //fisherman has
+        
+        //movementSpeed how fast to switch positions
+        
+        //strength how fast to reel fish in
+        
+        //accuracy how likely to hook fish
+        
         self.userInteractionEnabled = YES;
         
         baseHeight = fishermanWidth;
@@ -45,6 +54,11 @@
     return self;
 }
 
+-(void) setBoat:(SMBoat *)_boat andPosition:(int)_position {
+    boat = _boat;
+    position = _position;
+}
+
 -(void) castHookToLocation:(CGPoint)location {
     
     hookDestinationHighlight.position = location;
@@ -57,6 +71,35 @@
 }
 
 -(void) returnHook {
+    
+    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    [hook runAction:returnHookAction withKey:@"returning"];
+}
+
+-(void) moveToPosition:(int)index {
+    
+    CGPoint newLocation = [boat locationAtFishermanPosition:index];
+    position = index;
+    
+    // return hook first
+    SKAction *returnHookAction = [SKAction runBlock:(dispatch_block_t)^() {
+        [self returnHook];
+    }];
+    SKAction* changePositionAction = [SKAction moveTo:newLocation duration:1.0];
+    
+    SKAction* movePositionSequence = [SKAction sequence:@[returnHookAction,changePositionAction]];
+    
+    [self runAction:movePositionSequence withKey:@"changingPosition"];
+    
+}
+
+-(void) startReelingIn {
+    
+    
+}
+
+-(void) finishReelingIn {
+    
     
 }
 
@@ -76,8 +119,20 @@
     
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
+         NSLog(@"fisherman touch moved: %f,%f",location.x,location.y);
         
-        NSLog(@"fisherman moved: %f,%f",location.x,location.y);
+        // swipe down to cast hook
+        if (location.y < -20.0 && ![hook actionForKey:@"casting"]) {
+            
+            CGPoint hookTarget = CGPointMake(0.0,-100.0);
+            
+            [self castHookToLocation:hookTarget];
+            
+        } else {
+            [boat highlightFishermanPositionAtLocation:touch];
+        }
+        
+       
         
     }
 }
@@ -86,10 +141,18 @@
     /* Called when a touch begins */
     
     for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
+        //CGPoint location = [touch locationInNode:self];
+        CGPoint location = [touch locationInNode:boat.bodyNode];
         
         NSLog(@"fisherman ended: %f,%f",location.x,location.y);
-        [self castHookToLocation:location];
+        
+        int newPosition = [boat fishermanPositionAtLocation:touch];
+        
+        if (newPosition != position) {
+            [self moveToPosition:newPosition];
+        }
+        
+        //[self castHookToLocation:location];
         
     }
 }
