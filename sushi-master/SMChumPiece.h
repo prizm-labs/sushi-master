@@ -8,10 +8,16 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+@class SMOcean;
+
 @interface SMChumPiece : SKNode {
     SKSpriteNode* bodyNode;
+    SMOcean* ocean;
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
+@property (atomic,retain) SMOcean* ocean;
+
+-(void) consumed;
 
 @end

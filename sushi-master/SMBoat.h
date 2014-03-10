@@ -9,6 +9,7 @@
 #import <SpriteKit/SpriteKit.h>
 
 @class SMOcean;
+@class SMFish;
 
 @interface SMBoat : SKNode {
     SKSpriteNode* bodyNode;
@@ -41,5 +42,6 @@
 -(void) highlightFishermanPositionAtLocation:(UITouch*)touch;
 -(CGPoint) locationAtFishermanPosition:(int)index;
 -(void) scatterChumOfQuantity:(int)quantity;
+-(void) addCaughtFish:(SMFish*)fish atLocation:(CGPoint)location;
 
 @end

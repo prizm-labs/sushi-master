@@ -7,10 +7,11 @@
 //
 
 #import "SMChumPiece.h"
+#import "SMOcean.h"
 
 @implementation SMChumPiece
 
-@synthesize bodyNode;
+@synthesize bodyNode, ocean;
 
 -(id) init
 {
@@ -31,5 +32,10 @@
     return self;
 }
 
+-(void) consumed {
+    
+    [ocean removeChum:self];
+    
+}
 
 @end

@@ -9,11 +9,17 @@
 #import <SpriteKit/SpriteKit.h>
 
 @class SMFisherman;
+@class SMChumPiece;
+@class SMOcean;
 
 @interface SMFish : SKNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
     bool isLured;
+    
+    SMChumPiece* luringChum;
+    
+    SMOcean* ocean;
     
     //NPMyScene* scene;
     //NPCommandMarker* currentCommandMarker;
@@ -35,6 +41,7 @@
     
     bool willReceiveCommands;
 }
+@property (atomic,retain) SMOcean* ocean;
 @property (atomic,retain) SKSpriteNode* bodyNode;
 @property (assign,readwrite) int creatureClass;
 @property (assign,readwrite) int sizeClass;
@@ -45,5 +52,8 @@
 -(void) wrapMovement;
 -(void) updateDirection:(int)direction AtPosition:(CGPoint)position;
 -(void) caughtByFisherman:(SMFisherman*)fisherman;
+-(void) loadIntoBoat;
+-(void) eatChum:(SMChumPiece*)chum;
+-(void) luredByChum:(SMChumPiece*)chum;
 
 @end

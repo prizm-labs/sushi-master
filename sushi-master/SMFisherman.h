@@ -16,6 +16,7 @@
     
     SMBoat* boat;
     int position;
+    bool hookReadyToCast;
     
     SKSpriteNode* hook;
     SKSpriteNode* hookDestinationHighlight;

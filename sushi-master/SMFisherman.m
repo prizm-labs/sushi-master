@@ -30,13 +30,17 @@
         
         self.userInteractionEnabled = YES;
         
+        
+        
         baseHeight = fishermanWidth;
         CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
-        SKColor* baseColor = [SKColor yellowColor];
+        SKColor* baseColor = [SKColor blackColor];
         
         bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
         bodyNode.zPosition = zBoatBackground;
         [self addChild:bodyNode];
+        
+        hookedFish = [[NSMutableArray alloc] init];
         
         // setup
         
@@ -47,9 +51,12 @@
         [self addChild:hookDestinationHighlight];
         
         hook = [SKSpriteNode spriteNodeWithColor:[UIColor whiteColor] size:CGSizeMake(fishHookWidth, fishHookWidth)];
+        hook.name = @nodeNameHook;
         hook.zPosition = zOceanBackground;
         [self addChild:hook];
         hook.position = hookStartingPosition;
+        
+        hookReadyToCast = YES;
     }
     
     return self;
@@ -73,7 +80,10 @@
 
 -(void) returnHook {
     
+    
+    NSLog(@"returnHook");
     SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    //return returnHookAction;
     [hook runAction:returnHookAction withKey:@"returning"];
 }
 
@@ -83,14 +93,28 @@
     position = index;
     
     // return hook first
-    SKAction *returnHookAction = [SKAction runBlock:(dispatch_block_t)^() {
-        [self returnHook];
-    }];
+    
+    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    
     SKAction* changePositionAction = [SKAction moveTo:newLocation duration:1.0];
     
-    SKAction* movePositionSequence = [SKAction sequence:@[returnHookAction,changePositionAction]];
+    if (!hookReadyToCast) {
+        
+        [hook runAction:returnHookAction completion:^(){
+            
+            hookReadyToCast = YES;
+            NSLog(@"hooked returned!!!!!!!!");
+            [self runAction:changePositionAction];
+            
+        }];
+        
+    } else {
+        
+        [self runAction:changePositionAction];
+        
+    }
     
-    [self runAction:movePositionSequence withKey:@"changingPosition"];
+    
     
 }
 
@@ -100,32 +124,57 @@
     
      float xProximity = fabsf(hookPosition.x-fish.position.x);
      float yProximity = fabsf(hookPosition.y-fish.position.y);
-    NSLog(@"fish-hook proximity: %f,%f", xProximity, yProximity);
+    //NSLog(@"fish-hook proximity: %f,%f", xProximity, yProximity);
      
      if (xProximity<5.0 && yProximity<5.0) {
          NSLog(@"hook near fish");
      
-         [fish caughtByFisherman:self];
          [self hookFish:fish];
-         [self startReelingIn];
+         
      }
 
 }
 
 -(void) hookFish:(SMFish *)fish {
     
+    [fish caughtByFisherman:self];
+    
     fish.position = CGPointZero;
     [hook addChild:fish];
+    
+    [hookedFish addObject:fish];
+    
+    [self startReelingIn];
     
 }
 
 -(void) startReelingIn {
     
-    [self returnHook];
+    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    
+    [hook runAction:returnHookAction completion:^(){
+        
+        NSLog(@"fish caught!!!!!!!!");
+        
+        [self finishReelingIn];
+        
+    }];
 }
 
 -(void) finishReelingIn {
     
+    //CGPoint caughtFishStartingPosition
+    
+    [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+        
+        SMFish* fish = (SMFish*)_fish;
+        
+        CGPoint caughtFishLocation = [hook convertPoint:fish.position toNode:boat];
+        
+        [boat addCaughtFish:fish atLocation:caughtFishLocation];
+    }];
+    
+    [hookedFish removeAllObjects];
     
 }
 

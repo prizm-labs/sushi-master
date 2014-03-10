@@ -88,34 +88,48 @@
         //NSLog(@"fish: %f",fish.position.x);
         
         float xProximity = fabsf(chum.position.x-fish.position.x);
-        float yProximity = fabsf(chum.position.y-fish.position.y);
         
         if (xProximity<5.0) {
             //NSLog(@"command intersects creature");
             //[fish updateDirectionFromCommand:command];
             
-            [fish updateDirection:1 AtPosition:CGPointMake(chum.position.x, fish.position.y)];
+            [fish luredByChum:chum];
         }
 
         
     }];
-
-    
-    /*
-     if ([command.bodyNode intersectsNode:creature.bodyNode]) {
-     //NSLog(@"command intersects creature");
-     
-     float xProximity = fabsf(command.position.x-creature.position.x);
-     float yProximity = fabsf(command.position.y-creature.position.y);
-     
-     if (xProximity<5.0 && yProximity<5.0) {
-     NSLog(@"command intersects creature");
-     [creature updateDirectionFromCommand:command];
-     }
-     }*/
     
 }
 
+-(void) checkChumWillBeEatenByFish:(SMFish*)fish {
+    
+    [chumPieces enumerateObjectsUsingBlock:^(id chumPiece, NSUInteger idx, BOOL *stop) {
+    
+        SMChumPiece* chum = (SMChumPiece*)chumPiece;
+        
+        float xProximity = fabsf(chum.position.x-fish.position.x);
+        float yProximity = fabsf(chum.position.y-fish.position.y);
+        
+        if (xProximity<5.0 && yProximity<5.0) {
+            
+            [fish eatChum:chum];
+        }
+        
+        
+    }];
+}
+
+-(void) removeFish:(SMFish *)fish {
+    
+    [fish removeFromParent];
+    [creatures removeObject:fish];
+    
+}
+
+-(void) removeChum:(SMChumPiece*)chum {
+    [chum removeFromParent];
+    [chumPieces removeObject:chum];
+}
 
 
 -(void) addChumAtLocation:(CGPoint)location {
@@ -124,6 +138,8 @@
     SMChumPiece* chumPiece = [[SMChumPiece alloc] init];
     chumPiece.zPosition = zOceanForeground;
     chumPiece.position = location;
+    
+    chumPiece.ocean = self;
     
     [chumPieces addObject:chumPiece];
     [self addChild:chumPiece];
@@ -165,6 +181,7 @@
     
     [self addChild:creature];
     [creatures addObject:creature];
+    creature.ocean = self;
     
     if (direction!=0) {
         [creature startSwimmingInDirection:direction];

@@ -10,6 +10,7 @@
 #import "SMFisherman.h"
 #import "SMChumPiece.h"
 #import "SMOcean.h"
+#import "SMFish.h"
 
 @implementation SMBoat
 
@@ -139,8 +140,31 @@
     return index;
 }
 
--(void) addWeight {
-    // boat cannot
+-(void) addCaughtFish:(SMFish*)fish atLocation:(CGPoint)location {
+    
+    // animate fish flying off hook into boat
+
+    [fish loadIntoBoat];
+    
+    fish.position = location;
+    fish.zPosition = zBoatBackground;
+    [self addChild:fish];
+    
+    //TODO animate in arc
+    
+    CGPoint caughtFishStorage = CGPointMake(0,50.0);
+    SKAction* storeFishAction = [SKAction moveTo:caughtFishStorage duration:1.0];
+    
+    [fish runAction:storeFishAction completion:^{
+        NSLog(@"fish stored!!!!");
+    }];
+    
+    // get weight of fish
+}
+
+-(void) addWeight:(float)weight {
+    
+    // adjust boat above water level by weight
 }
 
 - (float)randomValueBetween:(float)low andValue:(float)high {

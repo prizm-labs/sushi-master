@@ -84,6 +84,8 @@
        
         SMFish* creature = (SMFish*)nodeB;
         [ocean checkChumLuredFish:creature];
+        [ocean checkChumWillBeEatenByFish:creature];
+        
         
         [creature wrapMovement];
         

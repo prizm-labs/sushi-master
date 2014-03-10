@@ -8,10 +8,12 @@
 
 #import "SMFish.h"
 #import "SMFisherman.h"
+#import "SMChumPiece.h"
+#import "SMOcean.h"
 
 @implementation SMFish
 
-@synthesize bodyNode, creatureClass, sizeClass;
+@synthesize ocean, bodyNode, creatureClass, sizeClass;
 
 -(id) init
 {
@@ -35,6 +37,8 @@
         
         //currentCommandMarker = nil;
         bodyNode = nil;
+        
+        luringChum = nil;
         
         willReceiveCommands = YES;
         movementDirection = 0;
@@ -184,8 +188,27 @@
     
 }
 
+-(void) luredByChum:(SMChumPiece*)chum {
+    
+    if (!isLured) {
+        
+        luringChum = chum;
+        
+        [self updateDirection:1 AtPosition:CGPointMake(chum.position.x, self.position.y)];
+    }
+    
+}
+
+-(void) eatChum:(SMChumPiece *)chum {
+    
+    [chum consumed];
+    
+    [self updateDirection:3 AtPosition:chum.position];
+    
+}
+
 -(void) updateDirection:(int)direction AtPosition:(CGPoint)position {
-    if (!isLured && movementDirection!=direction) {
+    if (movementDirection!=direction) {
         
         if ([self actionForKey:@kActionSwimmingKey]) {
             [self removeActionForKey:@kActionSwimmingKey];
@@ -205,9 +228,17 @@
         [self removeActionForKey:@kActionSwimmingKey];
     }
     
-    [self removeFromParent];
+    luringChum = nil;
+    
+    [ocean removeFish:self];
     
     // attach to hook
+}
+
+-(void) loadIntoBoat {
+    
+    [self removeFromParent];
+    
 }
 
 
@@ -236,8 +267,15 @@
             self.position = CGPointMake(-offscreenPadding,self.position.y);
             [self startSwimmingInDirection:2];
         } else if (isOffscreenBottom) {
-            self.position = CGPointMake(self.position.x,sceneHeight+offscreenPadding);
-            [self startSwimmingInDirection:3];
+            //self.position = CGPointMake(self.position.x,sceneHeight+offscreenPadding);
+            //[self startSwimmingInDirection:3];
+            
+            
+            // remove fish if moving down
+            // it has eaten and and will not be lured again
+            
+            [ocean removeFish:self];
+            
         } else if (isOffscreenLeft) {
             self.position = CGPointMake(sceneWidth+offscreenPadding,self.position.y);
             [self startSwimmingInDirection:4];

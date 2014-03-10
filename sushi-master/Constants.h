@@ -68,6 +68,8 @@
 #define bitmaskCategoryHook 2
 #define bitmaskCategoryChum 3
 
+
+#define nodeNameHook "hook"
 #define nodeNameFish "fish"
 #define fishWidth0 
 #define fishWidth1
