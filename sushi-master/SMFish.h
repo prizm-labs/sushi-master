@@ -8,9 +8,12 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+@class SMFisherman;
+
 @interface SMFish : SKNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
+    bool isLured;
     
     //NPMyScene* scene;
     //NPCommandMarker* currentCommandMarker;
@@ -40,5 +43,7 @@
 -(id) initWithCreatureClass: (int)_creatureClass AndSizeClass: (int)_sizeClass AtPoint: (CGPoint)origin;
 -(void) startSwimmingInDirection: (int)_movementDirection;
 -(void) wrapMovement;
+-(void) updateDirection:(int)direction AtPosition:(CGPoint)position;
+-(void) caughtByFisherman:(SMFisherman*)fisherman;
 
 @end

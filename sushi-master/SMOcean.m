@@ -13,7 +13,7 @@
 
 @implementation SMOcean
 
-@synthesize bodyNode;
+@synthesize bodyNode, boat;
 
 -(id) init
 {
@@ -38,14 +38,15 @@
         
         // setup
         
-        creatureLimit = 20;
+        creatureLimit = 1;
         creatures = [[NSMutableArray alloc] init];
         nextCreatureSpawnTime = 0;
+        
+        chumPieces = [[NSMutableArray alloc] init];
         
         // start game
         
         [self addFishingBoat];
-        //[self spawnCreaturesContinuously];
         
     }
     
@@ -78,6 +79,45 @@
     
 }
 
+-(void) checkChumLuredFish:(SMFish*)fish {
+    
+    [chumPieces enumerateObjectsUsingBlock:^(id chumPiece, NSUInteger idx, BOOL *stop) {
+        
+        SMChumPiece* chum = (SMChumPiece*)chumPiece;
+        //NSLog(@"chum piece x: %f",chum.position.x);
+        //NSLog(@"fish: %f",fish.position.x);
+        
+        float xProximity = fabsf(chum.position.x-fish.position.x);
+        float yProximity = fabsf(chum.position.y-fish.position.y);
+        
+        if (xProximity<5.0) {
+            //NSLog(@"command intersects creature");
+            //[fish updateDirectionFromCommand:command];
+            
+            [fish updateDirection:1 AtPosition:CGPointMake(chum.position.x, fish.position.y)];
+        }
+
+        
+    }];
+
+    
+    /*
+     if ([command.bodyNode intersectsNode:creature.bodyNode]) {
+     //NSLog(@"command intersects creature");
+     
+     float xProximity = fabsf(command.position.x-creature.position.x);
+     float yProximity = fabsf(command.position.y-creature.position.y);
+     
+     if (xProximity<5.0 && yProximity<5.0) {
+     NSLog(@"command intersects creature");
+     [creature updateDirectionFromCommand:command];
+     }
+     }*/
+    
+}
+
+
+
 -(void) addChumAtLocation:(CGPoint)location {
     
     
@@ -85,6 +125,7 @@
     chumPiece.zPosition = zOceanForeground;
     chumPiece.position = location;
     
+    [chumPieces addObject:chumPiece];
     [self addChild:chumPiece];
 }
 

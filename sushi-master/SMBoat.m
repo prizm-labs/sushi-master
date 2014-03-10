@@ -13,7 +13,7 @@
 
 @implementation SMBoat
 
-@synthesize bodyNode, ocean;
+@synthesize bodyNode, ocean, fishermen;
 
 -(id) init
 {
@@ -172,7 +172,7 @@
         
         NSLog(@"chum destination: %f,%f",chumDestination.x,chumDestination.y);
         
-        chumDestination = CGPointMake(chumDestination.x,chumDestination.y-120.0);
+        chumDestination = CGPointMake(chumDestination.x,chumDestination.y-fishHookDepth);
         
         [ocean addChumAtLocation:chumDestination];
     }

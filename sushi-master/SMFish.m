@@ -7,6 +7,7 @@
 //
 
 #import "SMFish.h"
+#import "SMFisherman.h"
 
 @implementation SMFish
 
@@ -19,7 +20,7 @@
     if (self)
     {
         self.userInteractionEnabled = YES;
-        
+        isLured = NO;
     }
     
     return self;
@@ -182,6 +183,33 @@
     [self runAction:movementLoop withKey:@kActionSwimmingKey];
     
 }
+
+-(void) updateDirection:(int)direction AtPosition:(CGPoint)position {
+    if (!isLured && movementDirection!=direction) {
+        
+        if ([self actionForKey:@kActionSwimmingKey]) {
+            [self removeActionForKey:@kActionSwimmingKey];
+        }
+        
+        self.position = position;
+        
+        [self startSwimmingInDirection:direction];
+        isLured = YES;
+    }
+    
+}
+
+-(void) caughtByFisherman:(SMFisherman*)fisherman {
+    
+    if ([self actionForKey:@kActionSwimmingKey]) {
+        [self removeActionForKey:@kActionSwimmingKey];
+    }
+    
+    [self removeFromParent];
+    
+    // attach to hook
+}
+
 
 -(void) wrapMovement {
     

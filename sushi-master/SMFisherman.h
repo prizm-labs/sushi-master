@@ -8,6 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 @class SMBoat;
+@class SMFish;
 
 @interface SMFisherman : SKNode {
     SKSpriteNode* bodyNode;
@@ -19,10 +20,14 @@
     SKSpriteNode* hook;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;
+    
+    NSMutableArray* hookedFish;
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
 
 -(void) setBoat:(SMBoat*)_boat andPosition:(int)_position;
+-(void) hookFish:(SMFish*)fish;
+-(void) checkHookedFish:(SMFish *)fish;
 
 @end

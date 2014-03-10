@@ -8,6 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 @class SMBoat;
+@class SMFish;
 
 @interface SMOcean : SKSpriteNode {
     SKSpriteNode* bodyNode;
@@ -19,11 +20,15 @@
     int creatureLimit;
     double nextCreatureSpawnTime;
     NSMutableArray* creatures;
+    
+    NSMutableArray* chumPieces;
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
+@property (atomic,retain) SMBoat* boat;
 
 -(void) spawnCreaturesContinuously;
 -(void) addChumAtLocation:(CGPoint)location;
+-(void) checkChumLuredFish:(SMFish*)fish;
 
 @end

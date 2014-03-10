@@ -35,6 +35,7 @@
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
 @property (atomic,retain) SMOcean* ocean;
+@property (atomic,retain) NSMutableArray* fishermen;
 
 -(int) fishermanPositionAtLocation:(UITouch*)touch;
 -(void) highlightFishermanPositionAtLocation:(UITouch*)touch;

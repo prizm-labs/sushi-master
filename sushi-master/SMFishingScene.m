@@ -9,6 +9,8 @@
 #import "SMFishingScene.h"
 #import "SMOcean.h"
 #import "SMFish.h"
+#import "SMBoat.h"
+#import "SMFisherman.h"
 
 @implementation SMFishingScene
 
@@ -81,11 +83,18 @@
         
        
         SMFish* creature = (SMFish*)nodeB;
-        
-        //NSLog(@"fish: %@",creature);
-        
+        [ocean checkChumLuredFish:creature];
         
         [creature wrapMovement];
+        
+        [ocean.boat.fishermen enumerateObjectsUsingBlock:^(id _fisherman, NSUInteger idx, BOOL *stop) {
+            
+            SMFisherman* fisherman = (SMFisherman*)_fisherman;
+            [fisherman checkHookedFish:creature];
+            
+        }];
     }];
+    
+    
 }
 @end

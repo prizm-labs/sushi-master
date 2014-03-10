@@ -8,6 +8,7 @@
 
 #import "SMFisherman.h"
 #import "SMBoat.h"
+#import "SMFish.h"
 
 @implementation SMFisherman
 
@@ -93,9 +94,34 @@
     
 }
 
+-(void) checkHookedFish:(SMFish *)fish {
+    
+    CGPoint hookPosition = [self convertPoint:hook.position toNode:(SKNode*)boat.ocean];
+    
+     float xProximity = fabsf(hookPosition.x-fish.position.x);
+     float yProximity = fabsf(hookPosition.y-fish.position.y);
+    NSLog(@"fish-hook proximity: %f,%f", xProximity, yProximity);
+     
+     if (xProximity<5.0 && yProximity<5.0) {
+         NSLog(@"hook near fish");
+     
+         [fish caughtByFisherman:self];
+         [self hookFish:fish];
+         [self startReelingIn];
+     }
+
+}
+
+-(void) hookFish:(SMFish *)fish {
+    
+    fish.position = CGPointZero;
+    [hook addChild:fish];
+    
+}
+
 -(void) startReelingIn {
     
-    
+    [self returnHook];
 }
 
 -(void) finishReelingIn {
@@ -124,7 +150,7 @@
         // swipe down to cast hook
         if (location.y < -20.0 && ![hook actionForKey:@"casting"]) {
             
-            CGPoint hookTarget = CGPointMake(0.0,-100.0);
+            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
             
             [self castHookToLocation:hookTarget];
             
