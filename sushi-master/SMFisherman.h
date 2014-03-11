@@ -21,6 +21,9 @@
     float hookCastSpeed;
     float movementSpeed;
     
+    NSTimer* breakawayTimer;
+    float breakawayResistance;
+    
     SKSpriteNode* hook;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;

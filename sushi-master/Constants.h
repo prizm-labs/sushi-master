@@ -83,6 +83,7 @@
 #define fishWeight3 40.0
 #define fishWeight4 50.0
 
-
+#define breakawayLimit 2.0
+#define chanceLure 0.05
 
 #endif

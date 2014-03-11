@@ -38,8 +38,8 @@
         //accuracy how likely to hook fish
         
         
-        movementSpeed = 150.0;
-        hookCastSpeed = 0.25;
+        movementSpeed = 200.0; //distance
+        hookCastSpeed = 0.15; //time
         
         self.userInteractionEnabled = YES;
         
@@ -180,11 +180,62 @@
     [hookedFish addObject:fish];
     
     hookDestinationHighlight.color = [UIColor greenColor];
-    //[self startReelingIn];
+   
+    [self startBreakawayTimer];
+    
+}
+
+-(void) startBreakawayTimer {
+    
+    NSLog(@"start breakaway timer");
+    
+    float breakawayTimeInterval = 0.1;
+    breakawayResistance = breakawayLimit/breakawayTimeInterval;
+    
+    //TODO set resistance based on fish size and fisherman strength
+    
+    breakawayTimer = [NSTimer scheduledTimerWithTimeInterval:breakawayTimeInterval target:self selector:@selector(updateBreakawayTimer) userInfo:nil repeats:YES];
+}
+
+
+-(void) updateBreakawayTimer {
+    
+    breakawayResistance-=1;
+    
+     NSLog(@"breakaway resistance: %f",breakawayResistance);
+    
+    if (breakawayResistance<=0) {
+        
+        [self endBreakawayTimer];
+        
+         NSLog(@"fish got away");
+        
+        [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+            
+            SMFish* fish = (SMFish*)_fish;
+            [hookedFish removeObject:fish];
+            hookDestinationHighlight.color = [UIColor redColor];
+            
+            [fish breakaway];
+            
+        }];
+  
+    }
+
+}
+
+-(void) endBreakawayTimer {
+    
+    if ([breakawayTimer isValid]) {
+        [breakawayTimer invalidate];
+        breakawayTimer = nil;
+    }
     
 }
 
 -(void) startReelingIn {
+    
+    [self endBreakawayTimer];
     
     SKAction* returnHookAction = [self returnHook];
     

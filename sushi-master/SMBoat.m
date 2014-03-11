@@ -76,8 +76,8 @@
     //TODO get number of fishermen in crew from server config
     
     [self addFishermanAtPosition:3];
-    [self addFishermanAtPosition:4];
-    [self addFishermanAtPosition:5];
+    //[self addFishermanAtPosition:4];
+    //[self addFishermanAtPosition:5];
 }
 
 -(void) addFishermanAtPosition:(int)position {
@@ -232,6 +232,18 @@
         [ocean addChumAtLocation:chumDestination];
     }
     
+}
+
+-(void) dumpCatch {
+    
+    totalWeight = 0;
+    [fishCaught enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+        
+        SMFish* fish = (SMFish*)_fish;
+        [fish removeFromParent];
+    }];
+    
+    [fishCaught removeAllObjects];
 }
 
 -(void) scatterChumContinuously {

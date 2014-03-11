@@ -127,6 +127,7 @@
     
     //[ocean removeAllFish];
     //[boat removeAllFish];
+    [ocean.boat dumpCatch];
 }
 
 -(void) highlightImminentBite {

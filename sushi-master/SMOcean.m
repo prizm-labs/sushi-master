@@ -70,8 +70,9 @@
         
         NSLog(@"ocean touched: %f,%f",location.x,location.y);
         
-        [boat scatterChumOfQuantity:4];
-        //[self addChumAtLocation:location];
+        int chumQuantity = 1;
+        
+        [boat scatterChumOfQuantity:chumQuantity];
     }
 }
 
@@ -89,11 +90,21 @@
         
         float xProximity = fabsf(chum.position.x-fish.position.x);
         
-        if (xProximity<5.0) {
-            //NSLog(@"command intersects creature");
-            //[fish updateDirectionFromCommand:command];
+        if (xProximity<1.0) {
             
-            [fish luredByChum:chum];
+            // chance increases the more chum pieces in water
+            
+            
+            float chance = [self randomValueBetween:0 andValue:1.0];
+            NSLog(@"chance: %f",chance);
+            
+            float wasLured = [chumPieces count]*0.1;
+            
+            if (chance<wasLured) {
+                 [fish luredByChum:chum];
+            }
+            
+           
         }
 
         

@@ -58,5 +58,6 @@
 -(void) eatChum:(SMChumPiece*)chum;
 -(void) luredByChum:(SMChumPiece*)chum;
 -(void) lostScent;
+-(void) breakaway;
 
 @end

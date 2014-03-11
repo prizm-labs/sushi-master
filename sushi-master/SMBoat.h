@@ -19,8 +19,7 @@
     SMOcean* ocean;
     
     NSMutableArray* fishCaught;
-    int fishCaughtWeight;
-    
+
     SKSpriteNode* activeFishermanPosition;
     
     float baseHeight;
@@ -48,5 +47,6 @@
 -(CGPoint) locationAtFishermanPosition:(int)index;
 -(void) scatterChumOfQuantity:(int)quantity;
 -(void) addCaughtFish:(SMFish*)fish atLocation:(CGPoint)location;
+-(void) dumpCatch;
 
 @end

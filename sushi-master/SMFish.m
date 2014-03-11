@@ -212,6 +212,16 @@
     
 }
 
+-(void) breakaway {
+    
+    NSLog(@"fish breaking away!!!!");
+    
+    isLured = NO;
+    luringChum = nil;
+    [self updateDirection:2 AtPosition:self.position];
+    
+}
+
 -(void) lostScent {
     
     isLured = NO;
