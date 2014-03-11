@@ -71,10 +71,17 @@
 
 #define nodeNameHook "hook"
 #define nodeNameFish "fish"
-#define fishWidth0 
-#define fishWidth1
-#define fishWidth2
-#define fishWidth3
+#define fishSize0 25.0
+#define fishSize1 35.0
+#define fishSize2 50.0
+#define fishSize3 65.0
+#define fishSize4 80.0
+
+#define fishWeight0 10.0
+#define fishWeight1 20.0
+#define fishWeight2 30.0
+#define fishWeight3 40.0
+#define fishWeight4 50.0
 
 
 

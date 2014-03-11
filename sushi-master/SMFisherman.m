@@ -73,6 +73,8 @@
     hookDestinationHighlight.hidden = NO;
     // draw fishing line to hook
     
+    hookReadyToCast = NO;
+    
     SKAction* castHookAction = [SKAction moveTo:location duration:1.0];
     
     [hook runAction:castHookAction withKey:@"casting"];

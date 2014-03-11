@@ -18,12 +18,17 @@
     
     SMOcean* ocean;
     
+    NSMutableArray* fishCaught;
+    int fishCaughtWeight;
+    
     SKSpriteNode* activeFishermanPosition;
     
     float baseHeight;
     float baseWidth;
+    
     float aboveWaterRatio;
     
+    float totalWeight;
     float weightCapacity;
     float baitCapacity;
     float catchCapacity;

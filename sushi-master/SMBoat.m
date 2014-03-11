@@ -11,6 +11,7 @@
 #import "SMChumPiece.h"
 #import "SMOcean.h"
 #import "SMFish.h"
+#import "SMFishingScene.h"
 
 @implementation SMBoat
 
@@ -24,6 +25,7 @@
     {
         self.userInteractionEnabled = YES;
         
+        totalWeight = 0;
         aboveWaterRatio = 0.8;
         baseHeight = boatHeight;
         baseWidth = boatWidth;
@@ -35,6 +37,8 @@
         bodyNode.zPosition = zBoat;
         bodyNode.position = CGPointMake(0, 0*aboveWaterRatio);
         [self addChild:bodyNode];
+        
+        fishCaught = [[NSMutableArray alloc] init];
         
         [self setupFishermenPositions];
     }
@@ -146,6 +150,7 @@
 
     [fish loadIntoBoat];
     
+    
     fish.position = location;
     fish.zPosition = zBoatBackground;
     [self addChild:fish];
@@ -157,6 +162,9 @@
     
     [fish runAction:storeFishAction completion:^{
         NSLog(@"fish stored!!!!");
+        [fishCaught addObject:fish];
+        
+        [self addWeight:fish.weight];
     }];
     
     // get weight of fish
@@ -164,7 +172,26 @@
 
 -(void) addWeight:(float)weight {
     
+    NSLog(@"adding weight to boat: %f",weight);
+    
+    totalWeight+=weight;
+    SMFishingScene* scene = (SMFishingScene*)self.scene;
+    
+    [scene updateWeightCounter:weight];
+    
     // adjust boat above water level by weight
+    
+    
+}
+
+-(NSDictionary*) reportCatch {
+    
+    
+    //TODO sum fish weight
+    
+    NSDictionary* report = @{@"quantity":[NSNumber numberWithInt: [fishCaught count]],@"weight":[NSNumber numberWithFloat:totalWeight]};
+    
+    return report;
 }
 
 - (float)randomValueBetween:(float)low andValue:(float)high {

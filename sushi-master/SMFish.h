@@ -28,6 +28,7 @@
     CGPoint destination;
     int creatureClass;
     int sizeClass;
+    float weight;
     int movementDirection;
     float movementSpeed;
     float rotation;
@@ -46,6 +47,7 @@
 @property (assign,readwrite) int creatureClass;
 @property (assign,readwrite) int sizeClass;
 @property (assign,readwrite) float movementSpeed;
+@property (assign,readwrite) float weight;
 
 -(id) initWithCreatureClass: (int)_creatureClass AndSizeClass: (int)_sizeClass AtPoint: (CGPoint)origin;
 -(void) startSwimmingInDirection: (int)_movementDirection;

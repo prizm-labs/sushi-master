@@ -12,6 +12,17 @@
 
 @interface SMFishingScene : SKScene <SKPhysicsContactDelegate> {
     SMOcean* ocean;
+    int timeAmount;
+    float weightCount;
+    SKLabelNode* weightLabel;
+    SKLabelNode* timerLabel;
+    SKLabelNode* startGameLabel;
+    
+    NSTimer* countdownTimer;
+    
+    bool gameStarted;
 }
+
+-(void) updateWeightCounter:(float)addedWeight;
 
 @end

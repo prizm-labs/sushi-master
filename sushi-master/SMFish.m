@@ -13,7 +13,7 @@
 
 @implementation SMFish
 
-@synthesize ocean, bodyNode, creatureClass, sizeClass;
+@synthesize ocean, bodyNode, creatureClass, sizeClass, weight, movementSpeed;
 
 -(id) init
 {
@@ -91,19 +91,24 @@
     
     switch (sizeClass) {
         case 0:
-            creatureWidth = 25.0;
+            creatureWidth = fishSize0;
+            weight = fishWeight0;
             break;
         case 1:
-            creatureWidth = 35.0;
+            creatureWidth = fishSize1;
+            weight = fishWeight1;
             break;
         case 2:
-            creatureWidth = 50.0;
+            creatureWidth = fishSize2;
+            weight = fishWeight2;
             break;
         case 3:
-            creatureWidth = 65.0;
+            creatureWidth = fishSize3;
+            weight = fishWeight3;
             break;
         case 4:
-            creatureWidth = 80.0;
+            creatureWidth = fishSize4;
+            weight = fishWeight4;
             break;
             
     }
