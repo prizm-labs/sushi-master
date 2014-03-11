@@ -47,13 +47,13 @@
 #define oceanHeight screenHeight*0.65
 
 #define boatWidth screenWidth*0.85
-#define boatHeight screenHeight*0.25
+#define boatHeight screenHeight*0.15
 
-#define fishermanWidth 40.0
+#define fishermanWidth 50.0
 
 #define chumPieceWidth 10.0
 #define fishHookWidth 15.0
-#define fishHookDepth 100.0
+#define fishHookDepth 80.0
 
 #define zOcean 2
 #define zOceanBackground zOcean-0.5

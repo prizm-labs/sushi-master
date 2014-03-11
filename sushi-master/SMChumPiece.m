@@ -8,6 +8,7 @@
 
 #import "SMChumPiece.h"
 #import "SMOcean.h"
+#import "SMFish.h"
 
 @implementation SMChumPiece
 
@@ -19,9 +20,11 @@
     
     if (self)
     {
+        luredFish = [[NSMutableArray alloc] init];
+        
         float baseWidth = chumPieceWidth;
         
-        SKColor* baseColor = [SKColor redColor];
+        SKColor* baseColor = [SKColor orangeColor];
         
         CGSize baseSize = CGSizeMake(baseWidth, baseWidth);
         
@@ -32,10 +35,26 @@
     return self;
 }
 
--(void) consumed {
+-(void) lureFish:(SMFish*)fish {
+    
+    [luredFish addObject:fish];
+    
+}
+
+-(void) consumedByFish:(SMFish*)fish {
+    
+    [luredFish removeObject:fish];
     
     [ocean removeChum:self];
     
+    [luredFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+       
+        SMFish* fish = (SMFish*)_fish;
+        [fish lostScent];
+        
+    }];
+    
+    [luredFish removeAllObjects];
 }
 
 @end

@@ -49,7 +49,7 @@
         self.zPosition = 1000;
         
         foodLevel = 0;
-        movementSpeed = 0.5;
+        movementSpeed = 0.25; // time to move 1 tile width
         
         [self updateBody];
         
@@ -170,6 +170,10 @@
     return CGPointMake(self.position.x+deltaX, self.position.y+deltaY);
 }
 
+- (float)randomValueBetween:(float)low andValue:(float)high {
+    return (((float) arc4random() / 0xFFFFFFFFu) * (high - low)) + low;
+}
+
 -(void) startSwimmingInDirection: (int)_movementDirection {
     movementDirection = _movementDirection;
     
@@ -182,7 +186,10 @@
     
     SKAction* unitRotateAction = [SKAction rotateToAngle:rotation duration:0.1 shortestUnitArc:YES];
     
-    SKAction *unitMoveAction = [SKAction moveByX:deltaX y:deltaY duration:movementSpeed];
+    
+    float variedSpeed = [self randomValueBetween:0.70 andValue:1.30]*movementSpeed;
+    
+    SKAction *unitMoveAction = [SKAction moveByX:deltaX y:deltaY duration:variedSpeed];
     
     [self runAction:unitRotateAction];
     
@@ -198,15 +205,24 @@
     if (!isLured) {
         
         luringChum = chum;
-        
+        isLured = YES;
+        [chum lureFish:self];
         [self updateDirection:1 AtPosition:CGPointMake(chum.position.x, self.position.y)];
     }
     
 }
 
+-(void) lostScent {
+    
+    isLured = NO;
+    luringChum = nil;
+    [self updateDirection:2 AtPosition:self.position];
+    
+}
+
 -(void) eatChum:(SMChumPiece *)chum {
     
-    [chum consumed];
+    [chum consumedByFish:self];
     
     [self updateDirection:3 AtPosition:chum.position];
     
@@ -222,7 +238,7 @@
         self.position = position;
         
         [self startSwimmingInDirection:direction];
-        isLured = YES;
+        
     }
     
 }

@@ -38,7 +38,7 @@
         
         // setup
         
-        creatureLimit = 1;
+        creatureLimit = 20;
         creatures = [[NSMutableArray alloc] init];
         nextCreatureSpawnTime = 0;
         
@@ -70,7 +70,7 @@
         
         NSLog(@"ocean touched: %f,%f",location.x,location.y);
         
-        [boat scatterChumOfQuantity:1];
+        [boat scatterChumOfQuantity:4];
         //[self addChumAtLocation:location];
     }
 }
@@ -202,7 +202,7 @@
         nextCreatureSpawnTime = currentTime+timeToNextSpawn;
         
         int newCreatureClass = 1;
-        int newCreatureSize = floorf([self randomValueBetween:0 andValue:3]);
+        int newCreatureSize = floorf([self randomValueBetween:0 andValue:1]);
         int newCreatureX = 0;
         int newCreatureY = floorf([self randomValueBetween:0 andValue:5]);
         int newCreatureDirection = 2;

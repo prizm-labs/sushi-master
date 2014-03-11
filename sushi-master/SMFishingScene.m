@@ -57,7 +57,7 @@
         startGameLabel.fontColor = [SKColor whiteColor];
         startGameLabel.fontSize = 60.0;
         startGameLabel.zPosition = zOceanForeground;
-        startGameLabel.position = CGPointMake(300, 200)
+        startGameLabel.position = CGPointMake(300, 100)
         ;
         
         [self addChild:startGameLabel];
@@ -123,7 +123,7 @@
 -(void) resetGame {
     
     weightCount = 0;
-    timeAmount = 10;
+    timeAmount = 60;
     
     //[ocean removeAllFish];
     //[boat removeAllFish];

@@ -18,6 +18,9 @@
     int position;
     bool hookReadyToCast;
     
+    float hookCastSpeed;
+    float movementSpeed;
+    
     SKSpriteNode* hook;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;

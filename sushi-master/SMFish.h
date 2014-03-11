@@ -57,5 +57,6 @@
 -(void) loadIntoBoat;
 -(void) eatChum:(SMChumPiece*)chum;
 -(void) luredByChum:(SMChumPiece*)chum;
+-(void) lostScent;
 
 @end

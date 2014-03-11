@@ -8,16 +8,18 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@class SMOcean;
+@class SMOcean, SMFish;
 
 @interface SMChumPiece : SKNode {
     SKSpriteNode* bodyNode;
     SMOcean* ocean;
+    NSMutableArray* luredFish;
 }
 
 @property (atomic,retain) SKSpriteNode* bodyNode;
 @property (atomic,retain) SMOcean* ocean;
 
--(void) consumed;
+-(void) consumedByFish:(SMFish*)fish;
+-(void) lureFish:(SMFish*)fish;
 
 @end

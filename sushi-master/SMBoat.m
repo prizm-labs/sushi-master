@@ -73,7 +73,11 @@
         [fishermenPositions addObject:fishermanPosition];
     }
     
+    //TODO get number of fishermen in crew from server config
+    
     [self addFishermanAtPosition:3];
+    [self addFishermanAtPosition:4];
+    [self addFishermanAtPosition:5];
 }
 
 -(void) addFishermanAtPosition:(int)position {

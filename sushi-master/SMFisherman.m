@@ -14,6 +14,15 @@
 
 @synthesize bodyNode;
 
+-(float) travelTimeAtDistance:(float)distance PerSecondBetweenA:(CGPoint)a andB:(CGPoint)b {
+    
+    float deltaX = fabs(a.x-b.x);
+    float deltaY = fabs(a.y-b.y);
+    float magnitude = powf(powf(deltaX, 2)+powf(deltaY, 2),0.5);
+    
+    return magnitude/distance;
+}
+
 -(id) init
 {
     self = [super init];
@@ -27,6 +36,10 @@
         //strength how fast to reel fish in
         
         //accuracy how likely to hook fish
+        
+        
+        movementSpeed = 150.0;
+        hookCastSpeed = 0.25;
         
         self.userInteractionEnabled = YES;
         
@@ -45,7 +58,7 @@
         // setup
         
         hookStartingPosition = CGPointMake(0,20);
-        hookDestinationHighlight = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.8] size:CGSizeMake(fishHookWidth*2, fishHookWidth*2)];
+        hookDestinationHighlight = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.8] size:CGSizeMake(fishermanWidth, fishermanWidth)];
         hookDestinationHighlight.hidden = YES;
         hook.zPosition = zOceanForeground;
         [self addChild:hookDestinationHighlight];
@@ -75,18 +88,26 @@
     
     hookReadyToCast = NO;
     
-    SKAction* castHookAction = [SKAction moveTo:location duration:1.0];
+    SKAction* castHookAction = [SKAction moveTo:location duration:hookCastSpeed];
     
     [hook runAction:castHookAction withKey:@"casting"];
 }
 
--(void) returnHook {
+-(SKAction*) returnHook {
     
+    float weightedHookCoefficient = 1.0;
+    
+    if ([hookedFish count]>0) {
+        //TODO vary by fish weight
+        weightedHookCoefficient = 1.5;
+    }
+    
+    float reelInSpeed = hookCastSpeed*weightedHookCoefficient;
     
     NSLog(@"returnHook");
-    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
-    //return returnHookAction;
-    [hook runAction:returnHookAction withKey:@"returning"];
+    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:reelInSpeed];
+    return returnHookAction;
+    //[hook runAction:returnHookAction withKey:@"returning"];
 }
 
 -(void) moveToPosition:(int)index {
@@ -96,9 +117,11 @@
     
     // return hook first
     
-    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    SKAction* returnHookAction = [self returnHook];
     
-    SKAction* changePositionAction = [SKAction moveTo:newLocation duration:1.0];
+    float travelTime = [self travelTimeAtDistance:movementSpeed PerSecondBetweenA:self.position andB:newLocation];
+    
+    SKAction* changePositionAction = [SKAction moveTo:newLocation duration:travelTime];
     
     if (!hookReadyToCast) {
         
@@ -106,13 +129,23 @@
             
             hookReadyToCast = YES;
             NSLog(@"hooked returned!!!!!!!!");
-            [self runAction:changePositionAction];
+            [self runAction:changePositionAction completion:^(){
+                
+                CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
+                [self castHookToLocation:hookTarget];
+                
+            }];
             
         }];
         
     } else {
         
-        [self runAction:changePositionAction];
+        [self runAction:changePositionAction completion:^(){
+            
+            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
+            [self castHookToLocation:hookTarget];
+            
+        }];
         
     }
     
@@ -146,19 +179,24 @@
     
     [hookedFish addObject:fish];
     
-    [self startReelingIn];
+    hookDestinationHighlight.color = [UIColor greenColor];
+    //[self startReelingIn];
     
 }
 
 -(void) startReelingIn {
     
-    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:1.0];
+    SKAction* returnHookAction = [self returnHook];
     
     [hook runAction:returnHookAction completion:^(){
         
         NSLog(@"fish caught!!!!!!!!");
         
         [self finishReelingIn];
+        
+        // automatically cast hook again
+        CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
+        [self castHookToLocation:hookTarget];
         
     }];
 }
@@ -177,6 +215,7 @@
     }];
     
     [hookedFish removeAllObjects];
+    hookDestinationHighlight.color = [UIColor redColor];
     
 }
 
@@ -197,13 +236,20 @@
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
          NSLog(@"fisherman touch moved: %f,%f",location.x,location.y);
-        
+        /*
         // swipe down to cast hook
         if (location.y < -20.0 && ![hook actionForKey:@"casting"]) {
             
             CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
             
-            [self castHookToLocation:hookTarget];
+            //[self castHookToLocation:hookTarget];
+            
+        }
+        */
+        // swipe up to reel in
+        if (location.y > 20.0 && !hookReadyToCast) {
+          
+            [self startReelingIn];
             
         } else {
             [boat highlightFishermanPositionAtLocation:touch];
