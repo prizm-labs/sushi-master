@@ -52,6 +52,8 @@
     maxFishermenPositions = 8;
     fishermenPositionSpacing = baseWidth/(maxFishermenPositions-1)*0.9;
     
+    fishermanPositionOrder = [[NSMutableArray alloc] initWithCapacity:maxFishermenPositions];
+    
     fishermenPositions = [[NSMutableArray alloc] initWithCapacity:maxFishermenPositions];
     
     fishermen = [[NSMutableArray alloc] initWithCapacity:maxFishermenPositions];
@@ -71,13 +73,32 @@
         [fishermanPosition.userData setValue:NO forKey:@"occupied"];
         
         [fishermenPositions addObject:fishermanPosition];
+        [fishermanPositionOrder addObject:[NSNull null]];
     }
     
     //TODO get number of fishermen in crew from server config
     
     [self addFishermanAtPosition:3];
-    //[self addFishermanAtPosition:4];
-    //[self addFishermanAtPosition:5];
+    [self addFishermanAtPosition:4];
+    [self addFishermanAtPosition:5];
+}
+
+-(void) setFisherman:(SMFisherman*)fisherman WithOrder:(int)order {
+    
+    [fishermanPositionOrder setObject:fisherman atIndexedSubscript:order];
+    
+}
+
+-(void) clearFishermanAtOrder:(int)order {
+    [fishermanPositionOrder setObject:[NSNull null] atIndexedSubscript:order];
+}
+
+-(SMFisherman*) getFishermanAtPosition:(int)position {
+    SMFisherman* fisherman = (SMFisherman*)[fishermanPositionOrder objectAtIndex:position];
+    
+    NSLog(@"fisherman at position: %i,%@",position,fisherman);
+    
+    return fisherman;
 }
 
 -(void) addFishermanAtPosition:(int)position {
@@ -97,6 +118,8 @@
     
     [fishermenDeck addChild:fisherman];
     [fishermen addObject:fisherman];
+    
+    [self setFisherman:fisherman WithOrder:position];
 }
 
 -(CGPoint) locationAtFishermanPosition:(int)index {
@@ -227,7 +250,7 @@
         
         NSLog(@"chum destination: %f,%f",chumDestination.x,chumDestination.y);
         
-        chumDestination = CGPointMake(chumDestination.x,chumDestination.y-fishHookDepth);
+        chumDestination = CGPointMake(chumDestination.x,chumDestination.y-chumDepth);
         
         [ocean addChumAtLocation:chumDestination];
     }

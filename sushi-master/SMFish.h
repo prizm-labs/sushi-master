@@ -6,34 +6,26 @@
 //  Copyright (c) 2014 PRZM. All rights reserved.
 //
 
-#import <SpriteKit/SpriteKit.h>
+#import "SMSeaCreature.h"
 
 @class SMFisherman;
 @class SMChumPiece;
 @class SMOcean;
 
-@interface SMFish : SKNode {
-    SKSpriteNode* bodyNode;
+@interface SMFish : SMSeaCreature {
+
     float baseHeight;
     bool isLured;
     
     SMChumPiece* luringChum;
     
-    SMOcean* ocean;
-    
     //NPMyScene* scene;
     //NPCommandMarker* currentCommandMarker;
 
-    SKShapeNode* facingDirection;
     CGPoint destination;
     int creatureClass;
     int sizeClass;
     float weight;
-    int movementDirection;
-    float movementSpeed;
-    float rotation;
-    float deltaX;
-    float deltaY;
     
     float healthLevel;
     float foodLevel;
@@ -42,15 +34,13 @@
     
     bool willReceiveCommands;
 }
-@property (atomic,retain) SMOcean* ocean;
-@property (atomic,retain) SKSpriteNode* bodyNode;
+
 @property (assign,readwrite) int creatureClass;
 @property (assign,readwrite) int sizeClass;
-@property (assign,readwrite) float movementSpeed;
 @property (assign,readwrite) float weight;
 
 -(id) initWithCreatureClass: (int)_creatureClass AndSizeClass: (int)_sizeClass AtPoint: (CGPoint)origin;
--(void) startSwimmingInDirection: (int)_movementDirection;
+
 -(void) wrapMovement;
 -(void) updateDirection:(int)direction AtPosition:(CGPoint)position;
 -(void) caughtByFisherman:(SMFisherman*)fisherman;

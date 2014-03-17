@@ -70,7 +70,7 @@
         
         NSLog(@"ocean touched: %f,%f",location.x,location.y);
         
-        int chumQuantity = 1;
+        int chumQuantity = 3;
         
         [boat scatterChumOfQuantity:chumQuantity];
     }
@@ -206,7 +206,7 @@
     
     if ( currentTime > nextCreatureSpawnTime && [creatures count]<creatureLimit) {
         
-        NSLog(@"creature count: %i",[creatures count]);
+        NSLog(@"creature count: %lu",(unsigned long)[creatures count]);
         
         float timeToNextSpawn = [self randomValueBetween:1.0 andValue:3.0];
         
@@ -214,9 +214,24 @@
         
         int newCreatureClass = 1;
         int newCreatureSize = floorf([self randomValueBetween:0 andValue:1]);
-        int newCreatureX = 0;
-        int newCreatureY = floorf([self randomValueBetween:0 andValue:5]);
-        int newCreatureDirection = 2;
+        
+        int newCreatureY = floorf([self randomValueBetween:0 andValue:12]);
+        
+        int newCreatureX, newCreatureDirection;
+        
+        int startingPositionType = floorf([self randomValueBetween:0 andValue:2]);
+        
+        if (startingPositionType==0) {
+            newCreatureX = 0;
+            newCreatureDirection = 2;
+        } else {
+            newCreatureX = screenTileWidth;
+            newCreatureDirection = 4;
+        }
+        
+        NSLog(@"starting type: %i, %i, %i",startingPositionType,newCreatureX,newCreatureDirection);
+        
+        // spawn on left or right side of screen
         
         [self spawnCreatureWithClass:newCreatureClass Size:newCreatureSize Direction:newCreatureDirection AtX:newCreatureX AndY:newCreatureY];
     }

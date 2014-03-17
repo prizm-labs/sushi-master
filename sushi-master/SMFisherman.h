@@ -7,16 +7,18 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
-@class SMBoat;
-@class SMFish;
+
+@class SMBoat, SMFish;
 
 @interface SMFisherman : SKNode {
     SKSpriteNode* bodyNode;
     float baseHeight;
+    int type;
     
     SMBoat* boat;
     int position;
     bool hookReadyToCast;
+    bool isReelingIn;
     
     float hookCastSpeed;
     float movementSpeed;
@@ -31,6 +33,7 @@
     NSMutableArray* hookedFish;
 }
 
+@property (assign,readonly) int type;
 @property (atomic,retain) SKSpriteNode* bodyNode;
 
 -(void) setBoat:(SMBoat*)_boat andPosition:(int)_position;

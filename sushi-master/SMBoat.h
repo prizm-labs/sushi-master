@@ -10,6 +10,7 @@
 
 @class SMOcean;
 @class SMFish;
+@class SMFisherman;
 
 @interface SMBoat : SKNode {
     SKSpriteNode* bodyNode;
@@ -35,6 +36,7 @@
     int maxFishermenPositions;
     float fishermenPositionSpacing;
     NSMutableArray* fishermenPositions;
+    NSMutableArray* fishermanPositionOrder;
     NSMutableArray* fishermen;
 }
 
@@ -42,6 +44,9 @@
 @property (atomic,retain) SMOcean* ocean;
 @property (atomic,retain) NSMutableArray* fishermen;
 
+-(void) clearFishermanAtOrder:(int)order;
+-(void) setFisherman:(SMFisherman*)fisherman WithOrder:(int)order;
+-(SMFisherman*) getFishermanAtPosition:(int)position;
 -(int) fishermanPositionAtLocation:(UITouch*)touch;
 -(void) highlightFishermanPositionAtLocation:(UITouch*)touch;
 -(CGPoint) locationAtFishermanPosition:(int)index;

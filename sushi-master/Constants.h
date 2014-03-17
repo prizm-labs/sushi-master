@@ -30,6 +30,8 @@
 #define screenCenter CGPointMake(screenWidth/2,screenHeight/2)
 
 #define kTileWidth 15.0
+#define screenTileWidth floorf(screenWidth/kTileWidth)
+#define screenTileHeight floorf(screenHeight/kTileWidth)
 
 #define kNodeCreatureName "creature"
 #define kNodeCommandName "command"
@@ -53,7 +55,8 @@
 
 #define chumPieceWidth 10.0
 #define fishHookWidth 15.0
-#define fishHookDepth 80.0
+#define fishHookDepth 100.0
+#define chumDepth 75.0
 
 #define zOcean 2
 #define zOceanBackground zOcean-0.5

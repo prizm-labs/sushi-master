@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04155D3418D695CA00233D76 /* SMSeaCreature.m in Sources */ = {isa = PBXBuildFile; fileRef = 04155D3318D695CA00233D76 /* SMSeaCreature.m */; };
+		04155D3718D695EB00233D76 /* SMSeaTurtle.m in Sources */ = {isa = PBXBuildFile; fileRef = 04155D3618D695EB00233D76 /* SMSeaTurtle.m */; };
+		04155D3A18D6AF3F00233D76 /* SMCreatureSpawner.m in Sources */ = {isa = PBXBuildFile; fileRef = 04155D3918D6AF3F00233D76 /* SMCreatureSpawner.m */; };
 		049BDD3018C408D1000D5EFC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049BDD2F18C408D1000D5EFC /* Foundation.framework */; };
 		049BDD3218C408D1000D5EFC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049BDD3118C408D1000D5EFC /* CoreGraphics.framework */; };
 		049BDD3418C408D1000D5EFC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049BDD3318C408D1000D5EFC /* UIKit.framework */; };
@@ -44,6 +47,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04155D3218D695C900233D76 /* SMSeaCreature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMSeaCreature.h; sourceTree = "<group>"; };
+		04155D3318D695CA00233D76 /* SMSeaCreature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMSeaCreature.m; sourceTree = "<group>"; };
+		04155D3518D695EB00233D76 /* SMSeaTurtle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMSeaTurtle.h; sourceTree = "<group>"; };
+		04155D3618D695EB00233D76 /* SMSeaTurtle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMSeaTurtle.m; sourceTree = "<group>"; };
+		04155D3818D6AF3E00233D76 /* SMCreatureSpawner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMCreatureSpawner.h; path = "sushi-master/SMCreatureSpawner.h"; sourceTree = "<group>"; };
+		04155D3918D6AF3F00233D76 /* SMCreatureSpawner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMCreatureSpawner.m; path = "sushi-master/SMCreatureSpawner.m"; sourceTree = "<group>"; };
 		049BDD2C18C408D1000D5EFC /* sushi-master.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sushi-master.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		049BDD2F18C408D1000D5EFC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		049BDD3118C408D1000D5EFC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +120,8 @@
 		049BDD2318C408D0000D5EFC = {
 			isa = PBXGroup;
 			children = (
+				04155D3818D6AF3E00233D76 /* SMCreatureSpawner.h */,
+				04155D3918D6AF3F00233D76 /* SMCreatureSpawner.m */,
 				049BDD3718C408D1000D5EFC /* sushi-master */,
 				049BDD5E18C408D1000D5EFC /* sushi-masterTests */,
 				049BDD2E18C408D1000D5EFC /* Frameworks */,
@@ -161,6 +172,10 @@
 				EC2A58C718C4619200F2D3F8 /* SMBoat.m */,
 				EC2A58C918C461B000F2D3F8 /* SMFish.h */,
 				EC2A58CA18C461B000F2D3F8 /* SMFish.m */,
+				04155D3218D695C900233D76 /* SMSeaCreature.h */,
+				04155D3318D695CA00233D76 /* SMSeaCreature.m */,
+				04155D3518D695EB00233D76 /* SMSeaTurtle.h */,
+				04155D3618D695EB00233D76 /* SMSeaTurtle.m */,
 				EC2A58CC18C461D400F2D3F8 /* SMFishingScene.h */,
 				EC2A58CD18C461D400F2D3F8 /* SMFishingScene.m */,
 				049BDD4F18C408D1000D5EFC /* Spaceship.png */,
@@ -307,11 +322,14 @@
 				EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */,
 				EC2A58CB18C461B000F2D3F8 /* SMFish.m in Sources */,
 				049BDD4B18C408D1000D5EFC /* SMViewController.m in Sources */,
+				04155D3718D695EB00233D76 /* SMSeaTurtle.m in Sources */,
+				04155D3A18D6AF3F00233D76 /* SMCreatureSpawner.m in Sources */,
 				4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */,
 				049BDD4E18C408D1000D5EFC /* SMMyScene.m in Sources */,
 				EC2A58D218C49BA400F2D3F8 /* SMChumPiece.m in Sources */,
 				049BDD3E18C408D1000D5EFC /* main.m in Sources */,
 				EC2A58C518C4615900F2D3F8 /* SMOcean.m in Sources */,
+				04155D3418D695CA00233D76 /* SMSeaCreature.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

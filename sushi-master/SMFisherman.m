@@ -12,7 +12,7 @@
 
 @implementation SMFisherman
 
-@synthesize bodyNode;
+@synthesize type,bodyNode;
 
 -(float) travelTimeAtDistance:(float)distance PerSecondBetweenA:(CGPoint)a andB:(CGPoint)b {
     
@@ -43,7 +43,7 @@
         
         self.userInteractionEnabled = YES;
         
-        
+        isReelingIn = NO;
         
         baseHeight = fishermanWidth;
         CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
@@ -84,13 +84,21 @@
     
     hookDestinationHighlight.position = location;
     hookDestinationHighlight.hidden = NO;
-    // draw fishing line to hook
+    
+    // TODO draw fishing line to hook
     
     hookReadyToCast = NO;
     
     SKAction* castHookAction = [SKAction moveTo:location duration:hookCastSpeed];
     
-    [hook runAction:castHookAction withKey:@"casting"];
+    //[hook runAction:castHookAction withKey:@"casting"];
+    
+    [hook runAction:castHookAction completion:^(){
+        
+        [self startReelingIn];
+        
+    }];
+
 }
 
 -(SKAction*) returnHook {
@@ -112,17 +120,45 @@
 
 -(void) moveToPosition:(int)index {
     
+    if ([self actionForKey:@"changingPosition"]){
+        return;
+    }
+    
+    [boat clearFishermanAtOrder:position];
+    
     CGPoint newLocation = [boat locationAtFishermanPosition:index];
-    position = index;
+    //position = index;
     
     // return hook first
     
-    SKAction* returnHookAction = [self returnHook];
+    //SKAction* returnHookAction = [self returnHook];
     
     float travelTime = [self travelTimeAtDistance:movementSpeed PerSecondBetweenA:self.position andB:newLocation];
     
+    SMFisherman* fishermanAtLocation = [boat getFishermanAtPosition:index];
+    
+    if (![fishermanAtLocation isEqual:[NSNull null]]) {
+        [fishermanAtLocation moveToPosition:position];
+    }
+    
     SKAction* changePositionAction = [SKAction moveTo:newLocation duration:travelTime];
     
+    SKAction* changePositionDoneAction = [SKAction runBlock:^(){
+        
+        if (![fishermanAtLocation isEqual:[NSNull null]]) {
+            [boat setFisherman:self WithOrder:position];
+        }
+        
+        position = index;
+        [boat setFisherman:self WithOrder:index];
+    }];
+    
+    SKAction* sequence = [SKAction sequence:@[changePositionAction,changePositionDoneAction]];
+    
+    [self runAction:sequence withKey:@"changingPosition"];
+
+    
+    /*
     if (!hookReadyToCast) {
         
         [hook runAction:returnHookAction completion:^(){
@@ -148,7 +184,7 @@
         }];
         
     }
-    
+    */
     
     
 }
@@ -157,20 +193,25 @@
     
     CGPoint hookPosition = [self convertPoint:hook.position toNode:(SKNode*)boat.ocean];
     
-     float xProximity = fabsf(hookPosition.x-fish.position.x);
-     float yProximity = fabsf(hookPosition.y-fish.position.y);
+    float xProximity = fabsf(hookPosition.x-fish.position.x);
+    float yProximity = fabsf(hookPosition.y-fish.position.y);
     //NSLog(@"fish-hook proximity: %f,%f", xProximity, yProximity);
-     
-     if (xProximity<5.0 && yProximity<5.0) {
+    
+    // extend active area of hook, so fisherman can catch a moving fish
+    
+    float activeHookRange = 20.0;
+    
+    if (xProximity<activeHookRange && yProximity<activeHookRange && isReelingIn && [hookedFish count]==0) {
          NSLog(@"hook near fish");
      
          [self hookFish:fish];
-         
-     }
+        
+    }
 
 }
 
 -(void) hookFish:(SMFish *)fish {
+    
     
     [fish caughtByFisherman:self];
     
@@ -181,7 +222,7 @@
     
     hookDestinationHighlight.color = [UIColor greenColor];
    
-    [self startBreakawayTimer];
+    //[self startBreakawayTimer];
     
 }
 
@@ -235,24 +276,30 @@
 
 -(void) startReelingIn {
     
-    [self endBreakawayTimer];
+    //[self endBreakawayTimer];
+    
+    isReelingIn = YES;
     
     SKAction* returnHookAction = [self returnHook];
     
     [hook runAction:returnHookAction completion:^(){
         
-        NSLog(@"fish caught!!!!!!!!");
+        NSLog(@"fish caughtx!!!!!!!!");
         
         [self finishReelingIn];
         
+        /*
         // automatically cast hook again
         CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
         [self castHookToLocation:hookTarget];
+         */
         
     }];
 }
 
 -(void) finishReelingIn {
+    
+    isReelingIn = NO;
     
     //CGPoint caughtFishStartingPosition
     
@@ -287,6 +334,26 @@
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
          NSLog(@"fisherman touch moved: %f,%f",location.x,location.y);
+        
+        [boat highlightFishermanPositionAtLocation:touch];
+
+        
+        // move fisherman immediately
+        // and swap positions with fisherman at that location
+        location = [touch locationInNode:boat.bodyNode];
+        
+        NSLog(@"fisherman ended: %f,%f",location.x,location.y);
+        
+        int newPosition = [boat fishermanPositionAtLocation:touch];
+        NSLog(@"new position, old position: %i,%i",newPosition,position);
+        
+        
+        if (newPosition != position) {
+            
+            [self moveToPosition:newPosition];
+        }
+
+        
         /*
         // swipe down to cast hook
         if (location.y < -20.0 && ![hook actionForKey:@"casting"]) {
@@ -296,8 +363,9 @@
             //[self castHookToLocation:hookTarget];
             
         }
-        */
+        
         // swipe up to reel in
+        
         if (location.y > 20.0 && !hookReadyToCast) {
           
             [self startReelingIn];
@@ -306,7 +374,7 @@
             [boat highlightFishermanPositionAtLocation:touch];
         }
         
-       
+        */
         
     }
 }
@@ -315,18 +383,34 @@
     /* Called when a touch begins */
     
     for (UITouch *touch in touches) {
-        //CGPoint location = [touch locationInNode:self];
-        CGPoint location = [touch locationInNode:boat.bodyNode];
         
-        NSLog(@"fisherman ended: %f,%f",location.x,location.y);
-        
-        int newPosition = [boat fishermanPositionAtLocation:touch];
-        
-        if (newPosition != position) {
-            [self moveToPosition:newPosition];
+        // if touched inside fisherman, cast hook
+        CGPoint location = [touch locationInNode:self];
+
+        if (fabs(location.x)<baseHeight/2 && fabs(location.y)<baseHeight/2) {
+            
+            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
+            [self castHookToLocation:hookTarget];
+
+        } else {
+            /*
+            location = [touch locationInNode:boat.bodyNode];
+            
+            NSLog(@"fisherman ended: %f,%f",location.x,location.y);
+            
+            int newPosition = [boat fishermanPositionAtLocation:touch];
+            NSLog(@"new position, old position: %i,%i",newPosition,position);
+            
+            if (newPosition != position) {
+                [self moveToPosition:newPosition];
+            }
+            */
+            //[self castHookToLocation:location];
+            
         }
         
-        //[self castHookToLocation:location];
+        
+        
         
     }
 }
