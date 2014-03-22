@@ -8,7 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@class SMBoat, SMFish;
+@class SMBoat, SMFish, SMHook;
 
 @interface SMFisherman : SKNode {
     SKSpriteNode* bodyNode;
@@ -17,6 +17,8 @@
     
     SMBoat* boat;
     int position;
+    
+    //TODO simplify hook state
     bool hookReadyToCast;
     bool isReelingIn;
     
@@ -26,7 +28,7 @@
     NSTimer* breakawayTimer;
     float breakawayResistance;
     
-    SKSpriteNode* hook;
+    SMHook* hook;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;
     

@@ -14,6 +14,8 @@
 #import "SMFisherman.h"
 #import "SMCreatureSpawner.h"
 
+#import "VisitablePhysicsBody.h"
+
 @implementation SMFishingScene
 
 -(id)initWithSize:(CGSize)size {
@@ -34,10 +36,10 @@
         
         //create creature spawners
         SMCreatureSpawner* tunaCreatureSpawner = [[SMCreatureSpawner alloc] initWithCreatureCategory:[SMFish class] InOcean:ocean];
-        tunaCreatureSpawner.creatureLimit = 20;
+        tunaCreatureSpawner.creatureLimit = 3;
         
         SMCreatureSpawner* turtleCreatureSpawner = [[SMCreatureSpawner alloc] initWithCreatureCategory:[SMSeaTurtle class] InOcean:ocean];
-        turtleCreatureSpawner.creatureLimit = 5;
+        turtleCreatureSpawner.creatureLimit = 1;
         
         creatureSpawners = [[NSMutableArray alloc] initWithObjects:turtleCreatureSpawner, tunaCreatureSpawner, nil];
         
@@ -163,7 +165,28 @@
     
 }
 
+#pragma mark Contact Handling
 
+- (void)didBeginContact:(SKPhysicsContact *)contact
+{
+    SKPhysicsBody *firstBody, *secondBody;
+    // Inspect these closely, they're actually private class instances of PKPhysicsBody
+    firstBody = contact.bodyA;
+    secondBody = contact.bodyB;
+    
+    NSLog(@"didBeginContact 1st Body: %@",firstBody.node.name);
+    NSLog(@"didBeginContact 2nd Body: %@",secondBody.node.name);
+
+
+    VisitablePhysicsBody *firstVisitableBody = [[VisitablePhysicsBody alloc] initWithBody:firstBody];
+    VisitablePhysicsBody *secondVisitableBody = [[VisitablePhysicsBody alloc] initWithBody:secondBody];
+    
+    [firstVisitableBody acceptVisitor:[ContactVisitor contactVisitorWithBody:secondBody forContact:contact]];
+    [secondVisitableBody acceptVisitor:[ContactVisitor contactVisitorWithBody:firstBody forContact:contact]];
+}
+
+
+#pragma mark Touch Handling
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
@@ -182,6 +205,8 @@
         
     }
 }
+
+#pragma mark Animation Handling
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
@@ -216,7 +241,9 @@
             
             if ([creature isMemberOfClass:[SMFish class]]) {
                 SMFisherman* fisherman = (SMFisherman*)_fisherman;
-                [fisherman checkHookedFish:(SMFish*)creature];
+                
+                //TODO let contact delegate check hook
+                //[fisherman checkHookedFish:(SMFish*)creature];
             }
             
             

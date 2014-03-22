@@ -25,6 +25,8 @@
         float creatureHeight = 25.0;
         SKColor* creatureColor = [SKColor redColor];
         
+        self.name = @nodeNameTurtle;
+        
         //[self updateBody];
         self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(creatureWidth, creatureHeight)];
         

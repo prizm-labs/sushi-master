@@ -8,15 +8,19 @@
 
 #import "ContactVisitor.h"
 #import <objc/runtime.h>
-#import "NodeCategories.h"
-#import "BallNodeContactVisitor.h"
-#import "PaddleNodeContactVisitor.h"
-#import "PlayfieldSceneContactVisitor.h"
+#import "SMHookContactVisitor.h"
 
 @implementation ContactVisitor
 
 + (id)contactVisitorWithBody:(SKPhysicsBody *)body forContact:(SKPhysicsContact *)contact
 {
+    if ((body.categoryBitMask & bitmaskCategoryHook) != 0) {
+        return [[SMHookContactVisitor alloc] initWithBody:body forContact:contact];
+    } else {
+        return nil;
+    }
+
+    /*
     if ((body.categoryBitMask & ballCategory) !=0) {
         return [[BallNodeContactVisitor alloc] initWithBody:body forContact:contact];
     } else if ((body.categoryBitMask & playfieldCategory) != 0) {
@@ -26,6 +30,7 @@
     } else {
         return nil;
     }
+     */
 }
 
 - (id)initWithBody:(SKPhysicsBody *)body forContact:(SKPhysicsContact *)contact

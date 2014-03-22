@@ -32,10 +32,9 @@
 		04FD613518D96BEF00658F80 /* SMCuttingBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD613418D96BEF00658F80 /* SMCuttingBoard.m */; };
 		04FD613A18D9796300658F80 /* SMSushiIngredient.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD613918D9796300658F80 /* SMSushiIngredient.m */; };
 		04FD613D18DC22E200658F80 /* VisitablePhysicsBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD613C18DC22E200658F80 /* VisitablePhysicsBody.m */; };
-		04FD614618DC230A00658F80 /* BallNodeContactVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD613F18DC230A00658F80 /* BallNodeContactVisitor.m */; };
 		04FD614718DC230A00658F80 /* ContactVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD614118DC230A00658F80 /* ContactVisitor.m */; };
-		04FD614818DC230A00658F80 /* PaddleNodeContactVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD614318DC230A00658F80 /* PaddleNodeContactVisitor.m */; };
-		04FD614918DC230A00658F80 /* PlayfieldSceneContactVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD614518DC230A00658F80 /* PlayfieldSceneContactVisitor.m */; };
+		04FD614D18DE342000658F80 /* SMHookContactVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD614C18DE342000658F80 /* SMHookContactVisitor.m */; };
+		04FD615018DE36B100658F80 /* SMHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD614F18DE36B100658F80 /* SMHook.m */; };
 		4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C8D605818C506A0009BB182 /* SMFisherman.m */; };
 		EC2A58C518C4615900F2D3F8 /* SMOcean.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C418C4615900F2D3F8 /* SMOcean.m */; };
 		EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C718C4619200F2D3F8 /* SMBoat.m */; };
@@ -93,14 +92,13 @@
 		04FD613918D9796300658F80 /* SMSushiIngredient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMSushiIngredient.m; sourceTree = "<group>"; };
 		04FD613B18DC22E200658F80 /* VisitablePhysicsBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VisitablePhysicsBody.h; path = "../../iOS-SpriteKit-Pong/Pong/VisitablePhysicsBody.h"; sourceTree = "<group>"; };
 		04FD613C18DC22E200658F80 /* VisitablePhysicsBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VisitablePhysicsBody.m; path = "../../iOS-SpriteKit-Pong/Pong/VisitablePhysicsBody.m"; sourceTree = "<group>"; };
-		04FD613E18DC230A00658F80 /* BallNodeContactVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallNodeContactVisitor.h; sourceTree = "<group>"; };
-		04FD613F18DC230A00658F80 /* BallNodeContactVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallNodeContactVisitor.m; sourceTree = "<group>"; };
 		04FD614018DC230A00658F80 /* ContactVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactVisitor.h; sourceTree = "<group>"; };
 		04FD614118DC230A00658F80 /* ContactVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactVisitor.m; sourceTree = "<group>"; };
-		04FD614218DC230A00658F80 /* PaddleNodeContactVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaddleNodeContactVisitor.h; sourceTree = "<group>"; };
-		04FD614318DC230A00658F80 /* PaddleNodeContactVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaddleNodeContactVisitor.m; sourceTree = "<group>"; };
-		04FD614418DC230A00658F80 /* PlayfieldSceneContactVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayfieldSceneContactVisitor.h; sourceTree = "<group>"; };
-		04FD614518DC230A00658F80 /* PlayfieldSceneContactVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayfieldSceneContactVisitor.m; sourceTree = "<group>"; };
+		04FD614A18DE332700658F80 /* NodeCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeCategories.h; sourceTree = "<group>"; };
+		04FD614B18DE342000658F80 /* SMHookContactVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMHookContactVisitor.h; sourceTree = "<group>"; };
+		04FD614C18DE342000658F80 /* SMHookContactVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHookContactVisitor.m; sourceTree = "<group>"; };
+		04FD614E18DE36B100658F80 /* SMHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMHook.h; sourceTree = "<group>"; };
+		04FD614F18DE36B100658F80 /* SMHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHook.m; sourceTree = "<group>"; };
 		4C8D605718C506A0009BB182 /* SMFisherman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFisherman.h; sourceTree = "<group>"; };
 		4C8D605818C506A0009BB182 /* SMFisherman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFisherman.m; sourceTree = "<group>"; };
 		EC2A58C318C4615900F2D3F8 /* SMOcean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMOcean.h; sourceTree = "<group>"; };
@@ -175,17 +173,12 @@
 		049BDD3718C408D1000D5EFC /* sushi-master */ = {
 			isa = PBXGroup;
 			children = (
-				EC2A58CF18C491CD00F2D3F8 /* Constants.h */,
 				04FD613B18DC22E200658F80 /* VisitablePhysicsBody.h */,
 				04FD613C18DC22E200658F80 /* VisitablePhysicsBody.m */,
-				04FD613E18DC230A00658F80 /* BallNodeContactVisitor.h */,
-				04FD613F18DC230A00658F80 /* BallNodeContactVisitor.m */,
 				04FD614018DC230A00658F80 /* ContactVisitor.h */,
 				04FD614118DC230A00658F80 /* ContactVisitor.m */,
-				04FD614218DC230A00658F80 /* PaddleNodeContactVisitor.h */,
-				04FD614318DC230A00658F80 /* PaddleNodeContactVisitor.m */,
-				04FD614418DC230A00658F80 /* PlayfieldSceneContactVisitor.h */,
-				04FD614518DC230A00658F80 /* PlayfieldSceneContactVisitor.m */,
+				04FD614B18DE342000658F80 /* SMHookContactVisitor.h */,
+				04FD614C18DE342000658F80 /* SMHookContactVisitor.m */,
 				04FD613718D96C1400658F80 /* FishingScene */,
 				04FD613618D96C0600658F80 /* SushiScene */,
 				049BDD4018C408D1000D5EFC /* SMAppDelegate.h */,
@@ -206,6 +199,8 @@
 		049BDD3818C408D1000D5EFC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EC2A58CF18C491CD00F2D3F8 /* Constants.h */,
+				04FD614A18DE332700658F80 /* NodeCategories.h */,
 				049BDD3918C408D1000D5EFC /* sushi-master-Info.plist */,
 				049BDD3A18C408D1000D5EFC /* InfoPlist.strings */,
 				049BDD3D18C408D1000D5EFC /* main.m */,
@@ -266,6 +261,8 @@
 				EC2A58CD18C461D400F2D3F8 /* SMFishingScene.m */,
 				04155D3818D6AF3E00233D76 /* SMCreatureSpawner.h */,
 				04155D3918D6AF3F00233D76 /* SMCreatureSpawner.m */,
+				04FD614E18DE36B100658F80 /* SMHook.h */,
+				04FD614F18DE36B100658F80 /* SMHook.m */,
 			);
 			name = FishingScene;
 			sourceTree = "<group>";
@@ -373,19 +370,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FD614D18DE342000658F80 /* SMHookContactVisitor.m in Sources */,
 				049BDD4218C408D1000D5EFC /* SMAppDelegate.m in Sources */,
 				04FD613218D96B9A00658F80 /* SMSushiScene.m in Sources */,
 				EC2A58CE18C461D400F2D3F8 /* SMFishingScene.m in Sources */,
 				04FD613A18D9796300658F80 /* SMSushiIngredient.m in Sources */,
-				04FD614618DC230A00658F80 /* BallNodeContactVisitor.m in Sources */,
-				04FD614818DC230A00658F80 /* PaddleNodeContactVisitor.m in Sources */,
+				04FD615018DE36B100658F80 /* SMHook.m in Sources */,
 				EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */,
 				04FD613D18DC22E200658F80 /* VisitablePhysicsBody.m in Sources */,
 				EC2A58CB18C461B000F2D3F8 /* SMFish.m in Sources */,
 				049BDD4B18C408D1000D5EFC /* SMViewController.m in Sources */,
 				04155D3718D695EB00233D76 /* SMSeaTurtle.m in Sources */,
 				04155D3A18D6AF3F00233D76 /* SMCreatureSpawner.m in Sources */,
-				04FD614918DC230A00658F80 /* PlayfieldSceneContactVisitor.m in Sources */,
 				4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */,
 				049BDD4E18C408D1000D5EFC /* SMMyScene.m in Sources */,
 				EC2A58D218C49BA400F2D3F8 /* SMChumPiece.m in Sources */,

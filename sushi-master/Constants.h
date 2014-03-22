@@ -67,16 +67,11 @@
 #define zBoatForeground zBoat+0.5
 #define zBoatBackground zBoat-0.5
 
-#define bitmaskCategoryNeutral 32
-#define bitmaskCategoryCreature 1
-#define bitmaskCategoryHook 2
-#define bitmaskCategoryChum 3
-#define bitmaskCategoryTuna 4
-#define bitmaskCategorySeaTurtle 5
-
 
 #define nodeNameHook "hook"
 #define nodeNameFish "fish"
+#define nodeNameTurtle "turtle"
+
 #define fishSize0 25.0
 #define fishSize1 35.0
 #define fishSize2 50.0
