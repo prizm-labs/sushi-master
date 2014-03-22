@@ -23,6 +23,8 @@
 
     SKSpriteNode* activeFishermanPosition;
     
+    int caughtFishShownLimit;
+    
     float baseHeight;
     float baseWidth;
     

@@ -13,16 +13,14 @@
 
 @implementation SMFish
 
-@synthesize creatureClass, sizeClass, weight;
-
 -(id) init
 {
     self = [super init];
     
     if (self)
     {
-        self.userInteractionEnabled = YES;
-        isLured = NO;
+        NSLog(@"init fish");
+        [self setup];
     }
     
     return self;
@@ -33,43 +31,55 @@
     
     if (self)
     {
-        levelUpLimits = @[ @1.0, @5.0, @10.0, @20.0];
         
-        //currentCommandMarker = nil;
-        bodyNode = nil;
-        
-        luringChum = nil;
-        
-        willReceiveCommands = YES;
-        movementDirection = 0;
         creatureClass = _creatureClass;
         sizeClass = _sizeClass;
         self.position = origin;
-        self.name = @nodeNameFish;
-        self.zPosition = 1000;
         
-        foodLevel = 0;
-        movementSpeed = 0.25; // time to move 1 tile width
-        
-        [self updateBody];
-        
-        facingDirection = [SKShapeNode node];
-        facingDirection.zPosition = 99;
-        facingDirection.position = CGPointMake(-10.0, -10.0);
-        CGPoint triangle[] = {CGPointMake(0.0, 0.0), CGPointMake(10.0, 20.0), CGPointMake(20.0, 0.0)};
-        CGMutablePathRef facingPointer = CGPathCreateMutable();
-        CGPathAddLines(facingPointer, NULL, triangle, 3);
-        facingDirection.path = facingPointer;
-        facingDirection.lineWidth = 1.0;
-        facingDirection.fillColor = [SKColor whiteColor];
-        facingDirection.strokeColor = [SKColor clearColor];
-        facingDirection.glowWidth = 0.0;
-        
-        
-        [self addChild:facingDirection];
+        [self setup];
     }
     
     return self;
+}
+
+-(void) setup {
+    
+    self.userInteractionEnabled = YES;
+    isLured = NO;
+    
+    levelUpLimits = @[ @1.0, @5.0, @10.0, @20.0];
+    
+    //currentCommandMarker = nil;
+    bodyNode = nil;
+    
+    luringChum = nil;
+    
+    willReceiveCommands = YES;
+    movementDirection = 0;
+    
+    self.name = @nodeNameFish;
+    self.zPosition = 1000;
+    
+    foodLevel = 0;
+    movementSpeed = 0.25; // time to move 1 tile width
+    
+    [self updateBody];
+    
+    facingDirection = [SKShapeNode node];
+    facingDirection.zPosition = 99;
+    facingDirection.position = CGPointMake(-10.0, -10.0);
+    CGPoint triangle[] = {CGPointMake(0.0, 0.0), CGPointMake(10.0, 20.0), CGPointMake(20.0, 0.0)};
+    CGMutablePathRef facingPointer = CGPathCreateMutable();
+    CGPathAddLines(facingPointer, NULL, triangle, 3);
+    facingDirection.path = facingPointer;
+    facingDirection.lineWidth = 1.0;
+    facingDirection.fillColor = [SKColor whiteColor];
+    facingDirection.strokeColor = [SKColor clearColor];
+    facingDirection.glowWidth = 0.0;
+    
+    
+    [self addChild:facingDirection];
+
 }
 
 -(void) updateBody {
@@ -213,50 +223,5 @@
     [self removeFromParent];
     
 }
-
-
--(void) wrapMovement {
-    
-    float sceneWidth = screenWidth;
-    float sceneHeight = screenHeight;
-    
-    float offscreenPadding = bodyNode.size.width/2;
-    
-    //NSLog(@"fish x: %f",self.position.x);
-    
-    bool isOffscreenRight = (self.position.x>sceneWidth+offscreenPadding+1);
-    bool isOffscreenLeft = (self.position.x<-offscreenPadding-1);
-    bool isOffscreenTop = (self.position.y>sceneHeight+offscreenPadding+1);
-    bool isOffscreenBottom = (self.position.y<-offscreenPadding-1);
-    
-    if (isOffscreenTop || isOffscreenRight || isOffscreenBottom || isOffscreenLeft) {
-        
-        [self removeActionForKey:@kActionSwimmingKey];
-        
-        if (isOffscreenTop) {
-            self.position = CGPointMake(self.position.x,-offscreenPadding);
-            [self startSwimmingInDirection:1];
-        } else if (isOffscreenRight) {
-            self.position = CGPointMake(-offscreenPadding,self.position.y);
-            [self startSwimmingInDirection:2];
-        } else if (isOffscreenBottom) {
-            //self.position = CGPointMake(self.position.x,sceneHeight+offscreenPadding);
-            //[self startSwimmingInDirection:3];
-            
-            
-            // remove fish if moving down
-            // it has eaten and and will not be lured again
-            
-            [ocean removeFish:self];
-            
-        } else if (isOffscreenLeft) {
-            self.position = CGPointMake(sceneWidth+offscreenPadding,self.position.y);
-            [self startSwimmingInDirection:4];
-        }
-        
-    }
-    
-}
-
 
 @end

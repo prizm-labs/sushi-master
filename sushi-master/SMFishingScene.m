@@ -9,8 +9,10 @@
 #import "SMFishingScene.h"
 #import "SMOcean.h"
 #import "SMFish.h"
+#import "SMSeaTurtle.h"
 #import "SMBoat.h"
 #import "SMFisherman.h"
+#import "SMCreatureSpawner.h"
 
 @implementation SMFishingScene
 
@@ -29,6 +31,22 @@
         ocean = [[SMOcean alloc] init];
         
         [self addChild:ocean];
+        
+        //create creature spawners
+        SMCreatureSpawner* tunaCreatureSpawner = [[SMCreatureSpawner alloc] initWithCreatureCategory:[SMFish class] InOcean:ocean];
+        tunaCreatureSpawner.creatureLimit = 20;
+        
+        SMCreatureSpawner* turtleCreatureSpawner = [[SMCreatureSpawner alloc] initWithCreatureCategory:[SMSeaTurtle class] InOcean:ocean];
+        turtleCreatureSpawner.creatureLimit = 5;
+        
+        creatureSpawners = [[NSMutableArray alloc] initWithObjects:turtleCreatureSpawner, tunaCreatureSpawner, nil];
+        
+        [creatureSpawners enumerateObjectsUsingBlock:^(id _spawner, NSUInteger idx, BOOL *stop) {
+            
+            SMCreatureSpawner* spawner = (SMCreatureSpawner*)_spawner;
+            [spawner startSpawning];
+            
+        }];
         
         gameStarted = NO;
         
@@ -168,23 +186,39 @@
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     
-    [ocean spawnCreaturesContinuously];
+    //[ocean spawnCreaturesContinuously];
+    
+    [creatureSpawners enumerateObjectsUsingBlock:^(id _spawner, NSUInteger idx, BOOL *stop) {
+        
+        SMCreatureSpawner* spawner = (SMCreatureSpawner*)_spawner;
+        [spawner spawnCreaturesContinuously];
+        
+    }];
     
     // creature movement and commands
-    [ocean enumerateChildNodesWithName:@nodeNameFish usingBlock:^(SKNode *nodeB, BOOL *stop) {
+    
+    
+    [ocean.creatures enumerateObjectsUsingBlock:^(id _creature, NSUInteger idx, BOOL *stop) {
+    //[ocean enumerateChildNodesWithName:@nodeNameFish usingBlock:^(SKNode *nodeB, BOOL *stop) {
         
        
-        SMFish* creature = (SMFish*)nodeB;
-        [ocean checkChumLuredFish:creature];
-        [ocean checkChumWillBeEatenByFish:creature];
+        SMSeaCreature* creature = (SMSeaCreature*)_creature;
         
+        // TODO checks according to creature species
+        
+        //[ocean checkChumLuredFish:creature];
+        //[ocean checkChumWillBeEatenByFish:creature];
         
         [creature wrapMovement];
         
         [ocean.boat.fishermen enumerateObjectsUsingBlock:^(id _fisherman, NSUInteger idx, BOOL *stop) {
             
-            SMFisherman* fisherman = (SMFisherman*)_fisherman;
-            [fisherman checkHookedFish:creature];
+            
+            if ([creature isMemberOfClass:[SMFish class]]) {
+                SMFisherman* fisherman = (SMFisherman*)_fisherman;
+                [fisherman checkHookedFish:(SMFish*)creature];
+            }
+            
             
         }];
     }];

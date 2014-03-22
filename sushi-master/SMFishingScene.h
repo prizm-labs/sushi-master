@@ -21,6 +21,8 @@
     NSTimer* countdownTimer;
     
     bool gameStarted;
+    
+    NSMutableArray* creatureSpawners;
 }
 
 -(void) updateWeightCounter:(float)addedWeight;

@@ -7,10 +7,16 @@
 //
 
 #import "SMSeaCreature.h"
+#import "SMOcean.h"
 
 @implementation SMSeaCreature
 
-@synthesize ocean,bodyNode,movementSpeed;
+@synthesize ocean,bodyNode,movementSpeed,creatureClass,sizeClass,weight;
+
+
+-(void) setup {
+    
+}
 
 -(CGPoint) setDestination {
     deltaX = 0, deltaY = 0;
@@ -70,5 +76,53 @@
     [self runAction:movementLoop withKey:@kActionSwimmingKey];
     
 }
+
+
+-(void) wrapMovement {
+    
+    float sceneWidth = screenWidth;
+    float sceneHeight = screenHeight;
+    
+    float offscreenPadding = bodyNode.size.width/2;
+    
+    //NSLog(@"fish x: %f",self.position.x);
+    
+    bool isOffscreenRight = (self.position.x>sceneWidth+offscreenPadding+1);
+    bool isOffscreenLeft = (self.position.x<-offscreenPadding-1);
+    bool isOffscreenTop = (self.position.y>sceneHeight+offscreenPadding+1);
+    bool isOffscreenBottom = (self.position.y<-offscreenPadding-1);
+    
+    if (isOffscreenTop || isOffscreenRight || isOffscreenBottom || isOffscreenLeft) {
+        
+        [self removeActionForKey:@kActionSwimmingKey];
+        
+        if (isOffscreenTop) {
+            self.position = CGPointMake(self.position.x,-offscreenPadding);
+            [self startSwimmingInDirection:1];
+            
+        } else if (isOffscreenRight) {
+            self.position = CGPointMake(-offscreenPadding,self.position.y);
+            [self startSwimmingInDirection:2];
+            
+        } else if (isOffscreenBottom) {
+            //self.position = CGPointMake(self.position.x,sceneHeight+offscreenPadding);
+            //[self startSwimmingInDirection:3];
+            
+            
+            // remove fish if moving down
+            // it has eaten and and will not be lured again
+            
+            [ocean removeCreature:self];
+            
+        } else if (isOffscreenLeft) {
+            self.position = CGPointMake(sceneWidth+offscreenPadding,self.position.y);
+            [self startSwimmingInDirection:4];
+            
+        }
+        
+    }
+    
+}
+
 
 @end

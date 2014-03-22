@@ -16,6 +16,7 @@
     
     if (self)
     {
+        NSLog(@"init sea turtle");
 
         movementSpeed = 0.25; // time to move 1 tile width
         
@@ -65,6 +66,10 @@
     }
     
     return self;
+    
+}
+
+-(void) setup {
     
 }
 

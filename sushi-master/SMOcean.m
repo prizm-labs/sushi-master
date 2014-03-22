@@ -10,10 +10,11 @@
 #import "SMChumPiece.h"
 #import "SMBoat.h"
 #import "SMFish.h"
+#import "SMCreatureSpawner.h"
 
 @implementation SMOcean
 
-@synthesize bodyNode, boat;
+@synthesize bodyNode, boat, creatures;
 
 -(id) init
 {
@@ -130,10 +131,23 @@
     }];
 }
 
+-(void) removeCreature:(SMSeaCreature*)creature {
+    
+    [creature removeFromParent];
+    [creatures removeObject:creature];
+    
+    //also remove from spawner
+    [creature.spawner removeCreature:creature];
+}
+
+
 -(void) removeFish:(SMFish *)fish {
     
     [fish removeFromParent];
     [creatures removeObject:fish];
+    
+    //also remove from spawner
+    [fish.spawner removeCreature:fish];
     
 }
 
@@ -167,7 +181,7 @@
     
     return CGPointMake(positionX,positionY);
 }
-
+/*
 -(void) spawnCreaturesFromData:(NSArray*)creaturesData {
     
     //NSLog(@"creatures data: %@",creaturesData);
@@ -237,6 +251,6 @@
     }
     
 }
-
+*/
 
 @end

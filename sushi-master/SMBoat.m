@@ -25,6 +25,8 @@
     {
         self.userInteractionEnabled = YES;
         
+        caughtFishShownLimit = 5;
+        
         totalWeight = 0;
         aboveWaterRatio = 0.8;
         baseHeight = boatHeight;
@@ -183,13 +185,19 @@
     [self addChild:fish];
     
     //TODO animate in arc
+    //http://www.ioscreator.com/tutorials/moving-sprites-path-sprite-kit
     
     CGPoint caughtFishStorage = CGPointMake(0,50.0);
     SKAction* storeFishAction = [SKAction moveTo:caughtFishStorage duration:1.0];
     
     [fish runAction:storeFishAction completion:^{
         NSLog(@"fish stored!!!!");
-        [fishCaught addObject:fish];
+        
+        if ([fishCaught count]>caughtFishShownLimit) {
+            [fish removeFromParent];
+        } else {
+            [fishCaught addObject:fish];
+        }
         
         [self addWeight:fish.weight];
     }];

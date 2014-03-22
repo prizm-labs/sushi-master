@@ -55,7 +55,8 @@
 
 #define chumPieceWidth 10.0
 #define fishHookWidth 15.0
-#define fishHookDepth 100.0
+#define fishHookCastingTime 2.0
+#define fishHookDepth -200.0
 #define chumDepth 75.0
 
 #define zOcean 2
@@ -70,6 +71,8 @@
 #define bitmaskCategoryCreature 1
 #define bitmaskCategoryHook 2
 #define bitmaskCategoryChum 3
+#define bitmaskCategoryTuna 4
+#define bitmaskCategorySeaTurtle 5
 
 
 #define nodeNameHook "hook"

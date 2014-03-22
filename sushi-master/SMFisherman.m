@@ -38,8 +38,8 @@
         //accuracy how likely to hook fish
         
         
-        movementSpeed = 200.0; //distance
-        hookCastSpeed = 0.15; //time
+        movementSpeed = 200.0; //pixels per second
+        hookCastSpeed = 200.0; //pixels per second
         
         self.userInteractionEnabled = YES;
         
@@ -62,6 +62,9 @@
         hookDestinationHighlight.hidden = YES;
         hook.zPosition = zOceanForeground;
         [self addChild:hookDestinationHighlight];
+        
+        //TODO attach hook as joint with limit
+        //https://developer.apple.com/library/ios/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Physics/Physics.html
         
         hook = [SKSpriteNode spriteNodeWithColor:[UIColor whiteColor] size:CGSizeMake(fishHookWidth, fishHookWidth)];
         hook.name = @nodeNameHook;
@@ -89,15 +92,17 @@
     
     hookReadyToCast = NO;
     
-    SKAction* castHookAction = [SKAction moveTo:location duration:hookCastSpeed];
+    float hookCastTime = [self travelTimeAtDistance:hookCastSpeed PerSecondBetweenA:hook.position andB:location];
     
-    //[hook runAction:castHookAction withKey:@"casting"];
+    SKAction* castHookAction = [SKAction moveTo:location duration:hookCastTime];
     
-    [hook runAction:castHookAction completion:^(){
-        
-        [self startReelingIn];
-        
+    SKAction* castHookDoneAction = [SKAction runBlock:^(){
+        //[self startReelingIn];
     }];
+    
+    SKAction* castHookSequence = [SKAction sequence:@[castHookAction,castHookDoneAction]];
+    
+    [hook runAction:castHookSequence withKey:@"casting"];
 
 }
 
@@ -110,13 +115,14 @@
         weightedHookCoefficient = 1.5;
     }
     
-    float reelInSpeed = hookCastSpeed*weightedHookCoefficient;
+    float hookReturnTime = [self travelTimeAtDistance:hookCastSpeed*weightedHookCoefficient PerSecondBetweenA:hook.position andB:hookStartingPosition] ;
     
     NSLog(@"returnHook");
-    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:reelInSpeed];
+    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:hookReturnTime];
+    
     return returnHookAction;
-    //[hook runAction:returnHookAction withKey:@"returning"];
 }
+
 
 -(void) moveToPosition:(int)index {
     
@@ -156,36 +162,6 @@
     SKAction* sequence = [SKAction sequence:@[changePositionAction,changePositionDoneAction]];
     
     [self runAction:sequence withKey:@"changingPosition"];
-
-    
-    /*
-    if (!hookReadyToCast) {
-        
-        [hook runAction:returnHookAction completion:^(){
-            
-            hookReadyToCast = YES;
-            NSLog(@"hooked returned!!!!!!!!");
-            [self runAction:changePositionAction completion:^(){
-                
-                CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
-                [self castHookToLocation:hookTarget];
-                
-            }];
-            
-        }];
-        
-    } else {
-        
-        [self runAction:changePositionAction completion:^(){
-            
-            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
-            [self castHookToLocation:hookTarget];
-            
-        }];
-        
-    }
-    */
-    
     
 }
 
@@ -201,10 +177,16 @@
     
     float activeHookRange = 20.0;
     
-    if (xProximity<activeHookRange && yProximity<activeHookRange && isReelingIn && [hookedFish count]==0) {
+    // first fished hooked starts reeling in
+    
+    if (xProximity<activeHookRange && yProximity<activeHookRange) {
          NSLog(@"hook near fish");
      
-         [self hookFish:fish];
+        [self hookFish:fish];
+        
+        if ([hookedFish count]==1) {
+            [self startReelingIn];
+        }
         
     }
 
@@ -278,22 +260,17 @@
     
     //[self endBreakawayTimer];
     
+    [hook removeAllActions];
+    
     isReelingIn = YES;
     
     SKAction* returnHookAction = [self returnHook];
     
     [hook runAction:returnHookAction completion:^(){
         
-        NSLog(@"fish caughtx!!!!!!!!");
+        NSLog(@"fish caught!!!!!!!!");
         
         [self finishReelingIn];
-        
-        /*
-        // automatically cast hook again
-        CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
-        [self castHookToLocation:hookTarget];
-         */
-        
     }];
 }
 
@@ -325,6 +302,7 @@
         
         NSLog(@"fisherman touched: %f,%f",location.x,location.y);
         
+        
     }
 }
 
@@ -352,30 +330,21 @@
             
             [self moveToPosition:newPosition];
         }
+        
+    }
+}
 
+-(void) toggleReeling {
+    
+    if (!isReelingIn) {
         
-        /*
-        // swipe down to cast hook
-        if (location.y < -20.0 && ![hook actionForKey:@"casting"]) {
+        if ([hook actionForKey:@"casting"]) {
             
-            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
-            
-            //[self castHookToLocation:hookTarget];
-            
-        }
-        
-        // swipe up to reel in
-        
-        if (location.y > 20.0 && !hookReadyToCast) {
-          
             [self startReelingIn];
-            
         } else {
-            [boat highlightFishermanPositionAtLocation:touch];
+            CGPoint hookTarget = CGPointMake(0.0,fishHookDepth);
+            [self castHookToLocation:hookTarget];
         }
-        
-        */
-        
     }
 }
 
@@ -384,13 +353,13 @@
     
     for (UITouch *touch in touches) {
         
-        // if touched inside fisherman, cast hook
+        // if touched up inside fisherman, return hook
         CGPoint location = [touch locationInNode:self];
 
         if (fabs(location.x)<baseHeight/2 && fabs(location.y)<baseHeight/2) {
             
-            CGPoint hookTarget = CGPointMake(0.0,-fishHookDepth);
-            [self castHookToLocation:hookTarget];
+            [self toggleReeling];
+            
 
         } else {
             /*
@@ -405,7 +374,6 @@
                 [self moveToPosition:newPosition];
             }
             */
-            //[self castHookToLocation:location];
             
         }
         

@@ -11,6 +11,7 @@
 @class SMFisherman;
 @class SMChumPiece;
 @class SMOcean;
+@class SMCreatureSpawner;
 
 @interface SMFish : SMSeaCreature {
 
@@ -23,9 +24,6 @@
     //NPCommandMarker* currentCommandMarker;
 
     CGPoint destination;
-    int creatureClass;
-    int sizeClass;
-    float weight;
     
     float healthLevel;
     float foodLevel;
@@ -35,13 +33,10 @@
     bool willReceiveCommands;
 }
 
-@property (assign,readwrite) int creatureClass;
-@property (assign,readwrite) int sizeClass;
-@property (assign,readwrite) float weight;
-
 -(id) initWithCreatureClass: (int)_creatureClass AndSizeClass: (int)_sizeClass AtPoint: (CGPoint)origin;
 
--(void) wrapMovement;
+-(void) setup;
+
 -(void) updateDirection:(int)direction AtPosition:(CGPoint)position;
 -(void) caughtByFisherman:(SMFisherman*)fisherman;
 -(void) loadIntoBoat;
