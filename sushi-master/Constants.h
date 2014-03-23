@@ -90,9 +90,13 @@
 #define fishermanWidth 50.0
 #define chumPieceWidth 10.0
 
-#define fileFishermanA "cat2.png"
-#define fishermanAwidth 55.0
+#define fileFishermanA "tiger1.png"
+#define fishermanAwidth 81.0
 #define fishermanAheight 65.0
+
+#define fileFishermanB "cat2.png"
+#define fishermanBwidth 55.0
+#define fishermanBheight 65.0
 
 #define fileBoat "boat.png"
 #define boatWidth 650.0
@@ -123,7 +127,12 @@
 // node movement & positions
 
 #define fishHookCastingTime 2.0
+
+#define fishHookStartX -33.0
+#define fishHookStartY -7.0
+#define fishHookEntersWaterDepth -40.0
 #define fishHookDepth -(oceanHeight+fishermanAheight/2)
+
 #define chumDepth 75.0
 
 #define boatDeckHeight -20.0

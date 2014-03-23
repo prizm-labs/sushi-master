@@ -32,6 +32,8 @@
     SKShapeNode *fishingline;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;
+    CGPoint hookTouchesWaterPosition;
+    CGPoint hookLimitPosition;
     
     NSMutableArray* hookedFish;
 }

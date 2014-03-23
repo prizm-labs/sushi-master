@@ -40,33 +40,36 @@
         
         
         movementSpeed = 200.0; //pixels per second
-        hookCastSpeed = 200.0; //pixels per second
+        hookCastSpeed = 350.0; //pixels per second
         
         self.userInteractionEnabled = YES;
         
         isReelingIn = NO;
         
         baseHeight = fishermanWidth;
-        //CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
-        //SKColor* baseColor = [SKColor blackColor];
         
-        
-        //bodyNode = [SKSpriteNode spriteNodeWithImageNamed:@fileFishermanA];
         bodyNode = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@fileFishermanA] size:CGSizeMake(fishermanAwidth, fishermanAheight)];
-        
+        bodyNode.xScale = 1.0;
+        bodyNode.yScale = 1.0;
         bodyNode.zPosition = zBoatBackground;
-        //bodyNode.position = CGPointMake(0,10.0);
         [self addChild:bodyNode];
         
         hookedFish = [[NSMutableArray alloc] init];
         
         // setup
         
-        hookStartingPosition = CGPointMake(0,20);
+        //TODO change hook start if fisherman facing another direction
+        // assumed facing left
+        hookStartingPosition = CGPointMake(fishHookStartX,fishHookStartY);
+        hookTouchesWaterPosition = CGPointMake(fishHookStartX,fishHookEntersWaterDepth);
+        hookLimitPosition = CGPointMake(fishHookStartX,fishHookDepth);
+        
+        /*
         hookDestinationHighlight = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.8] size:CGSizeMake(fishermanWidth, fishermanWidth)];
         hookDestinationHighlight.hidden = YES;
         hookDestinationHighlight.zPosition = zOceanForeground;
         [self addChild:hookDestinationHighlight];
+        */
         
         //TODO attach hook as joint with limit ??
         //https://developer.apple.com/library/ios/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Physics/Physics.html
@@ -163,17 +166,38 @@
 
 -(SKAction*) returnHook {
     
-    float weightedHookCoefficient = 1.0;
-    
-    if ([hookedFish count]>0) {
-        //TODO vary by fish weight
-        weightedHookCoefficient = 1.5;
-    }
-    
-    float hookReturnTime = [self travelTimeAtDistance:hookCastSpeed*weightedHookCoefficient PerSecondBetweenA:hook.position andB:hookStartingPosition] ;
-    
     NSLog(@"returnHook");
-    SKAction* returnHookAction = [SKAction moveTo:hookStartingPosition duration:hookReturnTime];
+    
+    // move hook to water surface
+    float hookReturnTime = [self travelTimeAtDistance:hookCastSpeed PerSecondBetweenA:hook.position andB:hookTouchesWaterPosition];
+    
+    SKAction* returnHookPart1Action = [SKAction moveTo:hookTouchesWaterPosition duration:hookReturnTime];
+    
+    // trigger animation of fisherman pulling fish out of water
+    SKAction* ifCaughtFishAction = [SKAction runBlock:^(){
+        if ([hookedFish count]>=1) {
+            
+            [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+                
+                SMFish* fish = (SMFish*)_fish;
+                
+                CGPoint caughtFishLocation = [hook convertPoint:fish.position toNode:boat];
+                
+                [boat addCaughtFish:fish atLocation:caughtFishLocation];
+            }];
+            
+            [hookedFish removeAllObjects];
+        }
+    }];
+    
+    // move hook to starting position
+    hookReturnTime = [self travelTimeAtDistance:hookCastSpeed PerSecondBetweenA:hookTouchesWaterPosition andB:hookStartingPosition];
+    
+    SKAction* returnHookPart2Action = [SKAction moveTo:hookStartingPosition duration:hookReturnTime];
+    
+    SKAction* returnHookAction = [SKAction sequence:@[returnHookPart1Action,ifCaughtFishAction,returnHookPart2Action]];
+    
+    //SKAction* returnHookAction = [SKAction sequence:@[returnHookPart1Action,ifCaughtFishAction]];
     
     return returnHookAction;
 }
@@ -232,6 +256,8 @@
     
     //[self endBreakawayTimer];
     
+    [self animateStartReelingIn];
+    
     [hook removeAllActions];
     
     isReelingIn = YES;
@@ -239,7 +265,6 @@
     SKAction* returnHookAction = [self returnHook];
     
     SKAction* returnHookDoneAction = [SKAction runBlock:^(){
-        //[self startReelingIn];
         [self finishReelingIn];
     }];
     
@@ -249,27 +274,65 @@
 }
 
 -(void) finishReelingIn {
-    
     NSLog(@"fish caught:%@",hookedFish);
+    
+    [self animateFinishReelingIn];
     
     isReelingIn = NO;
     hookReadyToCast = YES;
     
-    //CGPoint caughtFishStartingPosition
-    
-    [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+    /*
+    if ([hookedFish count]>=1) {
         
-        SMFish* fish = (SMFish*)_fish;
+        [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+            
+            SMFish* fish = (SMFish*)_fish;
+            
+            CGPoint caughtFishLocation = [hook convertPoint:fish.position toNode:boat];
+            
+            [boat addCaughtFish:fish atLocation:caughtFishLocation];
+        }];
         
-        CGPoint caughtFishLocation = [hook convertPoint:fish.position toNode:boat];
-        
-        [boat addCaughtFish:fish atLocation:caughtFishLocation];
-    }];
-    
-    [hookedFish removeAllObjects];
-    
-    //hookDestinationHighlight.color = [UIColor redColor];
+        [hookedFish removeAllObjects];
+    }
+     */
 }
+
+-(void)animateFinishReelingIn
+{
+    SKTextureAtlas *finishReelingAtlas = [SKTextureAtlas atlasNamed:@"tiger"];
+    
+    NSArray *finishReelingFrames = @[[finishReelingAtlas textureNamed:@"tiger5"],[finishReelingAtlas textureNamed:@"tiger4"],[finishReelingAtlas textureNamed:@"tiger3"],[finishReelingAtlas textureNamed:@"tiger2"],[finishReelingAtlas textureNamed:@"tiger1"]];
+    
+    NSLog(@"swim frames: %@",finishReelingFrames);
+    
+    [bodyNode runAction:[SKAction animateWithTextures:finishReelingFrames
+                                          timePerFrame:0.05f
+                                                resize:NO
+                                               restore:NO] withKey:@"finishReeling"];
+    //return;
+}
+
+
+-(void)animateStartReelingIn
+{
+    if ([bodyNode actionForKey:@"startReeling"])
+        return;
+    
+    SKTextureAtlas *startReelingAtlas = [SKTextureAtlas atlasNamed:@"tiger"];
+    
+    NSArray *startReelingFrames = @[[startReelingAtlas textureNamed:@"tiger1"],[startReelingAtlas textureNamed:@"tiger2"],[startReelingAtlas textureNamed:@"tiger3"],[startReelingAtlas textureNamed:@"tiger4"],[startReelingAtlas textureNamed:@"tiger5"]];
+    
+    NSLog(@"swim frames: %@",startReelingFrames);
+    
+    [bodyNode runAction:[SKAction animateWithTextures:startReelingFrames
+                                         timePerFrame:0.05f
+                                               resize:NO
+                                              restore:NO] withKey:@"startReeling"];
+    //return;
+}
+
+
 
 
 -(void) toggleReeling {
@@ -290,20 +353,15 @@
         
         if (hookReadyToCast) {
             NSLog(@"will cast hook");
-            CGPoint hookTarget = CGPointMake(0.0,fishHookDepth);
-            [self castHookToLocation:hookTarget];
+
+            [self castHookToLocation:hookLimitPosition];
             
         // if outbound (at limit) and stopped
         // return hook
         } else if (!isReelingIn) {
             
             [self startReelingIn];
-            
-        } else {
-            
-            
-            
-            [self startReelingIn];
+
         // if inbound and stopped
         // return hook
         }
@@ -331,9 +389,8 @@
     //http://stackoverflow.com/questions/19092011/how-to-draw-a-line-in-sprite-kit
     
     CGMutablePathRef pathToDraw = CGPathCreateMutable();
-    CGPathMoveToPoint(pathToDraw, NULL, 0.0, 0.0);
-    CGPathAddLineToPoint(pathToDraw, NULL, 0.0, hook.position.y);
-    //CGPathAddLineToPoint(pathToDraw, NULL, 0.0, fishHookDepth);
+    CGPathMoveToPoint(pathToDraw, NULL, fishHookStartX, fishHookStartY);
+    CGPathAddLineToPoint(pathToDraw, NULL, fishHookStartX, hook.position.y);
     fishingline.path = pathToDraw;
 }
 

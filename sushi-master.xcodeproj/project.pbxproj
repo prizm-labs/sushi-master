@@ -39,6 +39,7 @@
 		04FD617D18DE9F3C00658F80 /* art.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04FD617A18DE9F3C00658F80 /* art.atlas */; };
 		04FD617E18DE9F3C00658F80 /* fish.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04FD617B18DE9F3C00658F80 /* fish.atlas */; };
 		04FD617F18DE9F3C00658F80 /* seaturtle.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04FD617C18DE9F3C00658F80 /* seaturtle.atlas */; };
+		04FD618118DEC27C00658F80 /* tiger.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04FD618018DEC27C00658F80 /* tiger.atlas */; };
 		4C8D605918C506A0009BB182 /* SMFisherman.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C8D605818C506A0009BB182 /* SMFisherman.m */; };
 		EC2A58C518C4615900F2D3F8 /* SMOcean.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C418C4615900F2D3F8 /* SMOcean.m */; };
 		EC2A58C818C4619200F2D3F8 /* SMBoat.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2A58C718C4619200F2D3F8 /* SMBoat.m */; };
@@ -110,6 +111,7 @@
 		04FD617A18DE9F3C00658F80 /* art.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = art.atlas; path = altases/art.atlas; sourceTree = "<group>"; };
 		04FD617B18DE9F3C00658F80 /* fish.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = fish.atlas; path = altases/fish.atlas; sourceTree = "<group>"; };
 		04FD617C18DE9F3C00658F80 /* seaturtle.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = seaturtle.atlas; path = altases/seaturtle.atlas; sourceTree = "<group>"; };
+		04FD618018DEC27C00658F80 /* tiger.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = tiger.atlas; path = altases/tiger.atlas; sourceTree = "<group>"; };
 		4C8D605718C506A0009BB182 /* SMFisherman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFisherman.h; sourceTree = "<group>"; };
 		4C8D605818C506A0009BB182 /* SMFisherman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFisherman.m; sourceTree = "<group>"; };
 		EC2A58C318C4615900F2D3F8 /* SMOcean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMOcean.h; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				04FD615218DE4B2000658F80 /* TestFlight.h */,
 				04FD615318DE4B2000658F80 /* TestFlight+ManualSessions.h */,
 				04FD615418DE4B2000658F80 /* TestFlight+AsyncLogging.h */,
+				04FD618018DEC27C00658F80 /* tiger.atlas */,
 				04FD617A18DE9F3C00658F80 /* art.atlas */,
 				04FD617B18DE9F3C00658F80 /* fish.atlas */,
 				04FD617C18DE9F3C00658F80 /* seaturtle.atlas */,
@@ -368,6 +371,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				049BDD5218C408D1000D5EFC /* Images.xcassets in Resources */,
+				04FD618118DEC27C00658F80 /* tiger.atlas in Resources */,
 				049BDD4818C408D1000D5EFC /* Main_iPad.storyboard in Resources */,
 				04FD617D18DE9F3C00658F80 /* art.atlas in Resources */,
 				049BDD4518C408D1000D5EFC /* Main_iPhone.storyboard in Resources */,
