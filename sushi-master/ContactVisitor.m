@@ -54,6 +54,8 @@
     [contactSelectorString appendString:bodyClassName];
     [contactSelectorString appendString:@":"];
 
+    NSLog(@"vist selector:%@",contactSelectorString);
+    
     SEL selector = NSSelectorFromString(contactSelectorString);
     
     if ([self respondsToSelector:selector]) {

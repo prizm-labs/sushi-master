@@ -18,14 +18,13 @@
     {
         NSLog(@"init sea turtle");
 
-        movementSpeed = 0.25; // time to move 1 tile width
+        movementSpeed = 0.1; // time to move 1 tile width
         
-        
-        float creatureWidth = 40.0;
-        float creatureHeight = 25.0;
-        SKColor* creatureColor = [SKColor redColor];
-        
+        float creatureWidth = turtleWidth;
+        float creatureHeight = turtleHeight;
+
         self.name = @nodeNameTurtle;
+        self.zPosition = zOceanForeground;
         
         //[self updateBody];
         self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(creatureWidth, creatureHeight)];
@@ -40,31 +39,12 @@
          self.physicsBody.mass = 5;
          */
 
-        SKSpriteNode* newBody = [SKSpriteNode spriteNodeWithColor:creatureColor size:CGSizeMake(creatureWidth, creatureWidth)];
+        SKSpriteNode* newBody = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@fileTurtle] size:CGSizeMake(creatureWidth, creatureHeight)];
 
-        
+        sizeRatio = 1.0;
         bodyNode = newBody;
         
         [self addChild:bodyNode];
-        
-        
-        facingDirection = [SKShapeNode node];
-        facingDirection.zPosition = 99;
-        facingDirection.position = CGPointMake(-10.0, -10.0);
-        CGPoint triangle[] = {CGPointMake(0.0, 0.0), CGPointMake(10.0, 20.0), CGPointMake(20.0, 0.0)};
-        CGMutablePathRef facingPointer = CGPathCreateMutable();
-        CGPathAddLines(facingPointer, NULL, triangle, 3);
-        facingDirection.path = facingPointer;
-        facingDirection.lineWidth = 1.0;
-        facingDirection.fillColor = [SKColor whiteColor];
-        facingDirection.strokeColor = [SKColor clearColor];
-        facingDirection.glowWidth = 0.0;
-        
-        
-        [self addChild:facingDirection];
-        
-        
-        
     }
     
     return self;
@@ -73,6 +53,27 @@
 
 -(void) setup {
     
+}
+
+-(void)swimmingLoop
+{
+    SKTextureAtlas *fishSwimmingAtlas = [SKTextureAtlas atlasNamed:@"seaturtle"];
+    
+    NSArray *swimFrames = @[[fishSwimmingAtlas textureNamed:@"seaturtle1"],[fishSwimmingAtlas textureNamed:@"seaturtle2"],[fishSwimmingAtlas textureNamed:@"seaturtle3"],[fishSwimmingAtlas textureNamed:@"seaturtle4"],[fishSwimmingAtlas textureNamed:@"seaturtle5"],[fishSwimmingAtlas textureNamed:@"seaturtle4"],[fishSwimmingAtlas textureNamed:@"seaturtle3"],[fishSwimmingAtlas textureNamed:@"seaturtle2"]];
+    
+    NSLog(@"swim frames: %@",swimFrames);
+    
+    [bodyNode runAction:[SKAction repeatActionForever:
+                         [SKAction animateWithTextures:swimFrames
+                                          timePerFrame:0.2f
+                                                resize:NO
+                                               restore:YES]] withKey:@"swimming"];
+    return;
+}
+
+-(void) startSwimmingInDirection:(int)_movementDirection {
+    [super startSwimmingInDirection:_movementDirection];
+    [self swimmingLoop];
 }
 
 @end

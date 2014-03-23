@@ -38,15 +38,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sushi-master/SMFish.m"
-            timestampString = "417076134.258075"
+            timestampString = "417244599.02892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "-caughtByFisherman:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sushi-master/SMFisherman.m"
-            timestampString = "417217228.14963"
+            timestampString = "417246309.188555"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "-hookFish:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sushi-master/SMSeaCreature.m"
-            timestampString = "417077864.146291"
+            timestampString = "417230823.990154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "-wrapMovement"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,13 +106,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sushi-master/SMSeaCreature.m"
-            timestampString = "417077868.738121"
+            timestampString = "417230823.990154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "-wrapMovement"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "sushi-master/SMFish.h"
+            timestampString = "417243109.842976"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "@interface SMFish"
+            landmarkType = "2">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

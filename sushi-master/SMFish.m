@@ -20,7 +20,7 @@
     if (self)
     {
         NSLog(@"init fish");
-        [self setup];
+        //[self setup];
     }
     
     return self;
@@ -58,74 +58,80 @@
     movementDirection = 0;
     
     self.name = @nodeNameFish;
-    self.zPosition = 1000;
+    self.zPosition = zOceanForeground;
     
     foodLevel = 0;
     movementSpeed = 0.25; // time to move 1 tile width
     
     [self updateBody];
-    
-    facingDirection = [SKShapeNode node];
-    facingDirection.zPosition = 99;
-    facingDirection.position = CGPointMake(-10.0, -10.0);
-    CGPoint triangle[] = {CGPointMake(0.0, 0.0), CGPointMake(10.0, 20.0), CGPointMake(20.0, 0.0)};
-    CGMutablePathRef facingPointer = CGPathCreateMutable();
-    CGPathAddLines(facingPointer, NULL, triangle, 3);
-    facingDirection.path = facingPointer;
-    facingDirection.lineWidth = 1.0;
-    facingDirection.fillColor = [SKColor whiteColor];
-    facingDirection.strokeColor = [SKColor clearColor];
-    facingDirection.glowWidth = 0.0;
-    
-    
-    [self addChild:facingDirection];
-
 }
 
 -(void) updateBody {
+    
+    NSLog(@"fish update body enter: %@",self.children);
+    NSLog(@"body node: %@",bodyNode);
     
     //NSLog(@"size class:%i",sizeClass);
     //NSLog(@"creature class:%i",creatureClass);
     
     float creatureWidth;
+    float creatureHeight;
     UIColor* creatureColor;
+    
+    // TODO differentiate class by...
+    // blending a color into sprite??
     
     switch (creatureClass) {
         case 0:
             creatureColor = [UIColor grayColor];
+            creatureWidth = fishAwidth;
+            creatureHeight = fishAheight;
             break;
         case 1:
             creatureColor = [UIColor yellowColor];
+            creatureWidth = fishAwidth;
+            creatureHeight = fishAheight;
             break;
+        default:
+            creatureWidth = fishAwidth;
+            creatureHeight = fishAheight;
     }
     
     switch (sizeClass) {
         case 0:
-            creatureWidth = fishSize0;
+            sizeRatio = fishSize0;
             weight = fishWeight0;
             break;
         case 1:
-            creatureWidth = fishSize1;
+            sizeRatio = fishSize1;
             weight = fishWeight1;
             break;
         case 2:
-            creatureWidth = fishSize2;
+            sizeRatio = fishSize2;
             weight = fishWeight2;
             break;
         case 3:
-            creatureWidth = fishSize3;
+            sizeRatio = fishSize3;
             weight = fishWeight3;
             break;
         case 4:
-            creatureWidth = fishSize4;
+            sizeRatio = fishSize4;
             weight = fishWeight4;
             break;
             
     }
     
-    //NSLog(@"creature width:%f",creatureWidth);
     
-    self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(creatureWidth, creatureWidth)];
+    
+    if (bodyNode!=NULL) {
+        [bodyNode removeFromParent];
+    }
+    
+    //CGSize creatureSize = CGSizeMake(creatureWidth, creatureHeight);
+    
+    SKSpriteNode* newBody = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@fileFishA] size:CGSizeMake(creatureWidth, creatureHeight)];
+    
+    self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(creatureWidth*fishAContactSizeRatio, creatureHeight*fishAContactSizeRatio)];
     
     self.physicsBody.categoryBitMask = bitmaskCategoryCreature;
     self.physicsBody.allowsRotation = NO;
@@ -137,19 +143,38 @@
      self.physicsBody.mass = 5;
      */
     
-    if (bodyNode!=nil) {
-        [bodyNode removeFromParent];
-    }
-    
-    SKSpriteNode* newBody = [SKSpriteNode spriteNodeWithColor:creatureColor size:CGSizeMake(creatureWidth, creatureWidth)];
-    
     //NSLog(@"new body:%@",newBody);
     
     bodyNode = newBody;
     
+    bodyNode.xScale = sizeRatio;
+    bodyNode.yScale = sizeRatio;
+    
     [self addChild:bodyNode];
     
     //NSLog(@"body node:%@",bodyNode);
+    NSLog(@"fish update body exit: %@",self.children);
+}
+
+-(void)swimmingLoop
+{
+    SKTextureAtlas *fishSwimmingAtlas = [SKTextureAtlas atlasNamed:@"fish"];
+    
+    NSArray *swimFrames = @[[fishSwimmingAtlas textureNamed:@"fish1"],[fishSwimmingAtlas textureNamed:@"fish2"],[fishSwimmingAtlas textureNamed:@"fish1"],[fishSwimmingAtlas textureNamed:@"fish3"]];
+    
+    NSLog(@"swim frames: %@",swimFrames);
+    
+    [bodyNode runAction:[SKAction repeatActionForever:
+                      [SKAction animateWithTextures:swimFrames
+                                       timePerFrame:0.25f
+                                             resize:NO
+                                            restore:YES]] withKey:@"swimming"];
+    return;
+}
+
+-(void) startSwimmingInDirection:(int)_movementDirection {
+    [super startSwimmingInDirection:_movementDirection];
+    [self swimmingLoop];
 }
 
 -(void) luredByChum:(SMChumPiece*)chum {

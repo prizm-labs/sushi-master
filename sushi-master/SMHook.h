@@ -8,6 +8,10 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+@class SMFisherman;
+
 @interface SMHook : SKSpriteNode
+
+@property SMFisherman* fisherman;
 
 @end

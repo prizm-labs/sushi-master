@@ -7,12 +7,16 @@
 //
 
 #import "SMAppDelegate.h"
+#import "TestFlight.h"
 
 @implementation SMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    [TestFlight takeOff:@"96922e18-b026-4b8e-ba7b-1a89d1e28425"];
+    
     return YES;
 }
 							

@@ -16,22 +16,22 @@
     
     if (self)
     {
+        self.texture = [SKTexture textureWithImageNamed:@fileHook];
+        
         self.color = [UIColor whiteColor];
-        self.size = CGSizeMake(fishHookWidth, fishHookWidth);
+        self.size = CGSizeMake(hookWidth, hookHeight);
         self.name = @nodeNameHook;
         self.zPosition = zOceanBackground;
         
-        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fishHookWidth, fishHookWidth)];
+        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(hookWidth, hookHeight)];
         
         self.physicsBody.categoryBitMask = bitmaskCategoryHook;
         self.physicsBody.allowsRotation = NO;
         self.physicsBody.collisionBitMask = bitmaskCategoryNeutral;
         self.physicsBody.contactTestBitMask = bitmaskCategoryCreature;
-        
     }
     
-    return self;
-    
+    return self;    
 }
 
 @end

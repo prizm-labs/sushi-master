@@ -236,18 +236,14 @@
         
         [creature wrapMovement];
         
-        [ocean.boat.fishermen enumerateObjectsUsingBlock:^(id _fisherman, NSUInteger idx, BOOL *stop) {
-            
-            
-            if ([creature isMemberOfClass:[SMFish class]]) {
-                SMFisherman* fisherman = (SMFisherman*)_fisherman;
-                
-                //TODO let contact delegate check hook
-                //[fisherman checkHookedFish:(SMFish*)creature];
-            }
-            
-            
-        }];
+        
+    }];
+    
+    [ocean.boat.fishermen enumerateObjectsUsingBlock:^(id _fisherman, NSUInteger idx, BOOL *stop) {
+        
+        SMFisherman* fisherman = (SMFisherman*)_fisherman;
+        [fisherman updateFishingLine];
+        
     }];
     
     

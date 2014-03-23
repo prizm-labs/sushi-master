@@ -10,4 +10,8 @@
 
 @interface SMHookContactVisitor : ContactVisitor
 
+- (void)visitSMSeaCreature:(SKPhysicsBody *)seaCreatureBody;
+
+- (void)visitSMFish:(SKPhysicsBody *)fishBody;
+
 @end

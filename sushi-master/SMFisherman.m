@@ -47,11 +47,15 @@
         isReelingIn = NO;
         
         baseHeight = fishermanWidth;
-        CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
-        SKColor* baseColor = [SKColor blackColor];
+        //CGSize baseSize = CGSizeMake(baseHeight, baseHeight);
+        //SKColor* baseColor = [SKColor blackColor];
         
-        bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
+        
+        //bodyNode = [SKSpriteNode spriteNodeWithImageNamed:@fileFishermanA];
+        bodyNode = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@fileFishermanA] size:CGSizeMake(fishermanAwidth, fishermanAheight)];
+        
         bodyNode.zPosition = zBoatBackground;
+        //bodyNode.position = CGPointMake(0,10.0);
         [self addChild:bodyNode];
         
         hookedFish = [[NSMutableArray alloc] init];
@@ -64,14 +68,23 @@
         hookDestinationHighlight.zPosition = zOceanForeground;
         [self addChild:hookDestinationHighlight];
         
-        //TODO attach hook as joint with limit
+        //TODO attach hook as joint with limit ??
         //https://developer.apple.com/library/ios/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Physics/Physics.html
         
         hook = [[SMHook alloc] init];
         [self addChild:hook];
         hook.position = hookStartingPosition;
+        hook.fisherman = self;
         
         hookReadyToCast = YES;
+        
+        
+        fishingline = [SKShapeNode node];
+        [fishingline setStrokeColor:[UIColor whiteColor]];
+        [self addChild:fishingline];
+        
+        //TODO remove ???
+        [self updateFishingLine];
     }
     
     return self;
@@ -167,6 +180,13 @@
 
 -(void) checkHookedFish:(SMFish *)fish {
     
+    [self hookFish:fish];
+    
+    if ([hookedFish count]==1) {
+        [self startReelingIn];
+    }
+
+    /*
     CGPoint hookPosition = [self convertPoint:hook.position toNode:(SKNode*)boat.ocean];
     
     float xProximity = fabsf(hookPosition.x-fish.position.x);
@@ -189,71 +209,23 @@
         }
         
     }
-
+    */
 }
 
 -(void) hookFish:(SMFish *)fish {
     
-    
-    [fish caughtByFisherman:self];
-    
-    fish.position = CGPointZero;
-    [hook addChild:fish];
-    
-    [hookedFish addObject:fish];
-    
-    hookDestinationHighlight.color = [UIColor greenColor];
-   
-    //[self startBreakawayTimer];
-    
-}
-
--(void) startBreakawayTimer {
-    
-    NSLog(@"start breakaway timer");
-    
-    float breakawayTimeInterval = 0.1;
-    breakawayResistance = breakawayLimit/breakawayTimeInterval;
-    
-    //TODO set resistance based on fish size and fisherman strength
-    
-    breakawayTimer = [NSTimer scheduledTimerWithTimeInterval:breakawayTimeInterval target:self selector:@selector(updateBreakawayTimer) userInfo:nil repeats:YES];
-}
-
-
--(void) updateBreakawayTimer {
-    
-    breakawayResistance-=1;
-    
-     NSLog(@"breakaway resistance: %f",breakawayResistance);
-    
-    if (breakawayResistance<=0) {
+    if (![hookedFish containsObject:fish]) {
+        [fish caughtByFisherman:self];
         
-        [self endBreakawayTimer];
+        fish.position = CGPointZero;
+        [hook addChild:fish];
         
-         NSLog(@"fish got away");
+        [hookedFish addObject:fish];
         
-        [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
-            
-            SMFish* fish = (SMFish*)_fish;
-            [hookedFish removeObject:fish];
-            hookDestinationHighlight.color = [UIColor redColor];
-            
-            [fish breakaway];
-            
-        }];
-  
+        hookDestinationHighlight.color = [UIColor greenColor];
+        
+        //[self startBreakawayTimer];
     }
-
-}
-
--(void) endBreakawayTimer {
-    
-    if ([breakawayTimer isValid]) {
-        [breakawayTimer invalidate];
-        breakawayTimer = nil;
-    }
-    
 }
 
 -(void) startReelingIn {
@@ -278,6 +250,8 @@
 
 -(void) finishReelingIn {
     
+    NSLog(@"fish caught:%@",hookedFish);
+    
     isReelingIn = NO;
     hookReadyToCast = YES;
     
@@ -293,8 +267,8 @@
     }];
     
     [hookedFish removeAllObjects];
-    hookDestinationHighlight.color = [UIColor redColor];
     
+    //hookDestinationHighlight.color = [UIColor redColor];
 }
 
 
@@ -348,6 +322,68 @@
     }
     */
 }
+
+
+#pragma mark Time-based Actions
+
+-(void) updateFishingLine {
+    
+    //http://stackoverflow.com/questions/19092011/how-to-draw-a-line-in-sprite-kit
+    
+    CGMutablePathRef pathToDraw = CGPathCreateMutable();
+    CGPathMoveToPoint(pathToDraw, NULL, 0.0, 0.0);
+    CGPathAddLineToPoint(pathToDraw, NULL, 0.0, hook.position.y);
+    //CGPathAddLineToPoint(pathToDraw, NULL, 0.0, fishHookDepth);
+    fishingline.path = pathToDraw;
+}
+
+-(void) startBreakawayTimer {
+    
+    NSLog(@"start breakaway timer");
+    
+    float breakawayTimeInterval = 0.1;
+    breakawayResistance = breakawayLimit/breakawayTimeInterval;
+    
+    //TODO set resistance based on fish size and fisherman strength
+    
+    breakawayTimer = [NSTimer scheduledTimerWithTimeInterval:breakawayTimeInterval target:self selector:@selector(updateBreakawayTimer) userInfo:nil repeats:YES];
+}
+
+-(void) updateBreakawayTimer {
+    
+    breakawayResistance-=1;
+    
+    NSLog(@"breakaway resistance: %f",breakawayResistance);
+    
+    if (breakawayResistance<=0) {
+        
+        [self endBreakawayTimer];
+        
+        NSLog(@"fish got away");
+        
+        [hookedFish enumerateObjectsUsingBlock:^(id _fish, NSUInteger idx, BOOL *stop) {
+            
+            SMFish* fish = (SMFish*)_fish;
+            [hookedFish removeObject:fish];
+            hookDestinationHighlight.color = [UIColor redColor];
+            
+            [fish breakaway];
+            
+        }];
+        
+    }
+    
+}
+
+-(void) endBreakawayTimer {
+    
+    if ([breakawayTimer isValid]) {
+        [breakawayTimer invalidate];
+        breakawayTimer = nil;
+    }
+    
+}
+
 
 #pragma mark Touch Handling
 

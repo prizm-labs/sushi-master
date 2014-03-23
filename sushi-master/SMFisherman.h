@@ -29,6 +29,7 @@
     float breakawayResistance;
     
     SMHook* hook;
+    SKShapeNode *fishingline;
     SKSpriteNode* hookDestinationHighlight;
     CGPoint hookStartingPosition;
     
@@ -41,5 +42,6 @@
 -(void) setBoat:(SMBoat*)_boat andPosition:(int)_position;
 -(void) hookFish:(SMFish*)fish;
 -(void) checkHookedFish:(SMFish *)fish;
+-(void) updateFishingLine;
 
 @end

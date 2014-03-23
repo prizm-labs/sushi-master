@@ -54,6 +54,7 @@
 -(void) startSwimmingInDirection: (int)_movementDirection {
     movementDirection = _movementDirection;
     
+    
     [self setDestination];
     
     SKAction *unitDestinationAction = [SKAction runBlock:(dispatch_block_t)^() {
@@ -61,14 +62,22 @@
         //[self setDestination];
     }];
     
-    SKAction* unitRotateAction = [SKAction rotateToAngle:rotation duration:0.1 shortestUnitArc:YES];
-    
+    //SKAction* unitRotateAction = [SKAction rotateToAngle:rotation duration:0.1 shortestUnitArc:YES];
+    //[self runAction:unitRotateAction];
     
     float variedSpeed = [self randomValueBetween:0.70 andValue:1.30]*movementSpeed;
     
     SKAction *unitMoveAction = [SKAction moveByX:deltaX y:deltaY duration:variedSpeed];
     
-    [self runAction:unitRotateAction];
+    
+    // transform body to match direction
+    // assume creature facing right
+    if (movementDirection==4) {
+        bodyNode.xScale = -(sizeRatio);
+    } else {
+        bodyNode.xScale = sizeRatio;
+    }
+    // TODO angle body if moving up or down???
     
     SKAction* movementSequence = [SKAction sequence:@[unitMoveAction,unitDestinationAction]];
     SKAction *movementLoop = [SKAction repeatActionForever:movementSequence];

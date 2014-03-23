@@ -24,6 +24,8 @@
     int sizeClass;
     float weight;
     
+    float sizeRatio;
+    
     SMOcean* ocean;
     SKSpriteNode* bodyNode;
     SKShapeNode* facingDirection;

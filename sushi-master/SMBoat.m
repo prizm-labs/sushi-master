@@ -29,16 +29,18 @@
         
         totalWeight = 0;
         aboveWaterRatio = 0.8;
-        baseHeight = boatHeight;
-        baseWidth = boatWidth;
         baseColor = [SKColor brownColor];
         
-        CGSize baseSize = CGSizeMake(baseWidth, baseHeight);
+        baseWidth = boatWidth;
+        baseHeight = boatHeight;
         
-        bodyNode = [SKSpriteNode spriteNodeWithColor:baseColor size:baseSize];
+        bodyNode = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@fileBoat] size:CGSizeMake(boatWidth,boatHeight)];
+        
         bodyNode.zPosition = zBoat;
-        bodyNode.position = CGPointMake(0, 0*aboveWaterRatio);
+        bodyNode.position = CGPointMake(0,baseHeight/2+boatAboveWaterHeight);
         [self addChild:bodyNode];
+        
+        //TODO consider dynamically changing position to emulate waves
         
         fishCaught = [[NSMutableArray alloc] init];
         
@@ -61,8 +63,8 @@
     fishermen = [[NSMutableArray alloc] initWithCapacity:maxFishermenPositions];
     
     fishermenDeck = [SKNode node];
-    fishermenDeck.position = CGPointMake(-(maxFishermenPositions-1)*fishermenPositionSpacing/2,baseHeight*0.5);
-    fishermenDeck.zPosition = zBoatForeground;
+    fishermenDeck.position = CGPointMake(-(maxFishermenPositions-1)*fishermenPositionSpacing/2,boatDeckHeight);
+    fishermenDeck.zPosition = zBoatBackground;
     [bodyNode addChild:fishermenDeck];
     
     for (int n=0;n<maxFishermenPositions;n++) {
